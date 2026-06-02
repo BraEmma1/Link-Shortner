@@ -125,14 +125,14 @@ export default function LinksClient() {
             Manage and organize all your shortened links.
           </p>
         </div>
-        <div className="flex gap-2">
+        <div className="flex flex-col sm:flex-row gap-2 w-full sm:w-auto">
           <select 
             value={statusFilter}
             onChange={(e) => {
               setStatusFilter(e.target.value);
               setPage(1);
             }}
-            className="bg-surface-container-lowest border border-border-light rounded-lg px-4 py-2 font-body-sm text-body-sm focus:ring-2 focus:ring-secondary outline-none cursor-pointer"
+            className="bg-surface-container-lowest border border-border-light rounded-lg px-4 py-2 font-body-sm text-body-sm focus:ring-2 focus:ring-secondary outline-none cursor-pointer w-full sm:w-auto"
           >
             <option value="All Status">All Status</option>
             <option value="active">Active</option>
@@ -147,14 +147,15 @@ export default function LinksClient() {
               setSearch(e.target.value);
               setPage(1);
             }}
-            className="bg-surface-container-lowest border border-border-light rounded-lg px-4 py-2 font-body-sm text-body-sm focus:ring-2 focus:ring-secondary outline-none w-48"
+            className="bg-surface-container-lowest border border-border-light rounded-lg px-4 py-2 font-body-sm text-body-sm focus:ring-2 focus:ring-secondary outline-none w-full sm:w-48"
           />
         </div>
       </div>
 
-      {/* ── Links Table ── */}
+      {/* ── Links Table / Card Grid ── */}
       <div className="bg-surface-container-lowest rounded-lg border border-border-light shadow-sm overflow-hidden flex flex-col mb-12">
-        <div className="overflow-x-auto">
+        {/* Desktop View Table */}
+        <div className="overflow-x-auto hidden md:block">
           <table className="w-full text-left border-collapse min-w-[700px]">
             <thead>
               <tr className="bg-[#F1F5F9] border-b border-border-light">
@@ -244,6 +245,80 @@ export default function LinksClient() {
             </tbody>
           </table>
         </div>
+
+        {/* Mobile View Cards List */}
+        <div className="block md:hidden divide-y divide-border-light/50">
+          {isLoading ? (
+            // Loading Skeleton for Mobile
+            Array.from({ length: 5 }).map((_, i) => (
+              <div key={i} className="p-4 space-y-3 animate-pulse">
+                <div className="flex justify-between">
+                  <div className="h-4 bg-surface-container rounded w-1/3" />
+                  <div className="h-4 bg-surface-container rounded w-1/6" />
+                </div>
+                <div className="h-3 bg-surface-container rounded w-1/2" />
+                <div className="flex justify-between items-center pt-2">
+                  <div className="h-3 bg-surface-container rounded w-1/4" />
+                  <div className="h-6 bg-surface-container rounded w-1/5" />
+                </div>
+              </div>
+            ))
+          ) : links.length === 0 ? (
+            <div className="py-8 text-center text-secondary text-sm">
+              No links found. Create one to get started!
+            </div>
+          ) : (
+            links.map((link) => (
+              <div key={link._id} className="p-4 space-y-3 hover:bg-background-subtle transition-all">
+                <div className="flex justify-between items-start">
+                  <h4 className="font-label-md text-label-md text-on-surface truncate pr-2 max-w-[200px]" title={link.title}>
+                    {link.title || 'Untitled'}
+                  </h4>
+                  <StatusBadge status={link.status} />
+                </div>
+
+                <div className="space-y-1">
+                  <div className="flex items-center gap-1.5">
+                    <a href={link.shortUrl} target="_blank" rel="noopener noreferrer" className="text-primary hover:underline font-mono-code text-[13px] font-semibold truncate max-w-[220px]">
+                      {link.shortUrl.replace(/^https?:\/\//, '')}
+                    </a>
+                    <button onClick={() => handleCopy(link.shortUrl)} className="text-secondary hover:text-primary p-1" title="Copy URL">
+                      <span className="material-symbols-outlined text-sm">content_copy</span>
+                    </button>
+                  </div>
+                  <p className="font-body-sm text-[12px] text-secondary truncate max-w-sm" title={link.targetUrl}>
+                    {link.targetUrl}
+                  </p>
+                </div>
+
+                <div className="flex items-center justify-between pt-2 border-t border-border-light/30">
+                  <div className="flex items-center gap-4 font-body-sm text-xs text-secondary">
+                    <span className="flex items-center gap-1">
+                      <span className="material-symbols-outlined text-sm">bar_chart</span>
+                      {link.clicks.toLocaleString()} clicks
+                    </span>
+                    <span>
+                      {new Date(link.createdAt).toLocaleDateString()}
+                    </span>
+                  </div>
+
+                  <div className="flex items-center gap-2">
+                    <Link href={`/analytics?linkId=${link._id}`} className="text-secondary hover:text-primary p-2 bg-surface-container-low hover:bg-surface-variant rounded transition-colors" title="Analytics">
+                      <span className="material-symbols-outlined text-[16px]">bar_chart</span>
+                    </Link>
+                    <button onClick={() => openEditModal(link)} className="text-secondary hover:text-primary p-2 bg-surface-container-low hover:bg-surface-variant rounded transition-colors" title="Edit">
+                      <span className="material-symbols-outlined text-[16px]">edit</span>
+                    </button>
+                    <button onClick={() => handleDelete(link._id)} className="text-secondary hover:text-red-600 p-2 bg-surface-container-low hover:bg-red-50 rounded transition-colors" title="Delete">
+                      <span className="material-symbols-outlined text-[16px]">delete</span>
+                    </button>
+                  </div>
+                </div>
+              </div>
+            ))
+          )}
+        </div>
+
         {/* Pagination */}
         <div className="p-gutter border-t border-border-light flex justify-between items-center bg-surface-container-lowest">
           <p className="font-body-sm text-body-sm text-secondary">

@@ -1,16 +1,27 @@
 'use client';
 
 import { useState } from 'react';
+import Link from 'next/link';
+import { usePathname } from 'next/navigation';
 import SideNavBar from '@/components/layout/SideNavBar';
 import TopNavBar from '@/components/layout/TopNavBar';
 import Modal from '@/components/ui/Modal';
 import api from '@/lib/api';
+
+const NAV_ITEMS = [
+  { label: 'Dashboard', href: '/dashboard', icon: 'dashboard' },
+  { label: 'Links', href: '/links', icon: 'link' },
+  { label: 'Analytics', href: '/analytics', icon: 'bar_chart' },
+  { label: 'QR Codes', href: '/qrcodes', icon: 'qr_code' },
+  { label: 'Settings', href: '/settings', icon: 'settings' },
+];
 
 export default function DashboardLayout({
   children,
 }: {
   children: React.ReactNode;
 }) {
+  const pathname = usePathname();
   const [isCreateModalOpen, setIsCreateModalOpen] = useState(false);
   const [targetUrl, setTargetUrl] = useState('');
   const [customSlug, setCustomSlug] = useState('');
@@ -74,9 +85,40 @@ export default function DashboardLayout({
         <TopNavBar onCreateLink={() => setIsCreateModalOpen(true)} />
 
         {/* Scrollable Page Content */}
-        <main className="flex-1 p-margin-mobile md:p-margin-desktop overflow-y-auto">
+        <main className="flex-1 p-margin-mobile md:p-margin-desktop overflow-y-auto pb-24 md:pb-margin-desktop">
           {children}
         </main>
+
+        {/* Mobile FAB for Create Action */}
+        <button 
+          onClick={() => setIsCreateModalOpen(true)}
+          className="fixed bottom-24 right-6 w-14 h-14 bg-primary text-on-primary rounded-full shadow-lg flex items-center justify-center z-50 active:scale-95 transition-transform md:hidden"
+        >
+          <span className="material-symbols-outlined text-2xl">add</span>
+        </button>
+
+        {/* Mobile Bottom Navigation Bar */}
+        <nav className="fixed bottom-0 left-0 w-full z-40 flex justify-around items-center px-2 py-3 bg-surface border-t border-border-light shadow-lg rounded-t-xl md:hidden">
+          {NAV_ITEMS.map((item) => {
+            const isActive = pathname === item.href || pathname.startsWith(`${item.href}/`);
+            return (
+              <Link
+                key={item.href}
+                href={item.href}
+                className={
+                  isActive
+                    ? 'flex flex-col items-center justify-center bg-primary-container text-on-primary-container rounded-full px-4 py-1.5 scale-95 active:scale-90 transition-all font-bold'
+                    : 'flex flex-col items-center justify-center text-secondary px-4 py-1.5 active:scale-95 transition-all'
+                }
+              >
+                <span className={`material-symbols-outlined${isActive ? ' fill' : ''}`}>
+                  {item.icon}
+                </span>
+                <span className="font-label-sm text-label-sm mt-0.5">{item.label}</span>
+              </Link>
+            );
+          })}
+        </nav>
       </div>
 
       {/* ── Create Link Modal (shared across all dashboard pages) ── */}

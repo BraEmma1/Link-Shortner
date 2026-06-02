@@ -53,7 +53,7 @@ export default function SettingsClient() {
           {/* Profile Card */}
           <section className="bg-surface-container-lowest rounded-xl shadow-sm border border-border-light p-6 md:p-8">
             <h3 className="font-headline-md text-headline-md text-on-surface mb-6 border-b border-border-light pb-4">Profile Information</h3>
-            <div className="flex flex-col md:flex-row gap-8 items-start mb-8">
+            <div className="flex flex-col md:flex-row gap-8 items-center md:items-start mb-8">
               <div className="relative group cursor-pointer shrink-0">
                 <img alt="Profile Avatar" className="w-24 h-24 rounded-full border-2 border-border-light object-cover" src="https://lh3.googleusercontent.com/aida-public/AB6AXuCbwm9t_Hj1SjOabMVoKcEE_xQ6giMIRdSeWpr60a-Ws8Xl79a9uXYtMP43FdsRxehtmH8nQ9JTo-SAekq7hPRXqMlt6_765fzX7YuOy7uBvXv_bZJ77WQBWk9GLbR-gaFnrQkXjAf_YZfMHnyLFP9HW9q2ALO2E2lSZnfyESExqUfNEdT__MQF-JAQG6S8UYgi8oVsvq3ksXJXOAqW_-idTFiHOVNHvDsN5rA9MaZKCb4HYZYdoAqQRaY_paIAl09Cm6v3SQqsiw"/>
                 <div className="absolute inset-0 bg-on-background/50 rounded-full flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity">
@@ -81,7 +81,7 @@ export default function SettingsClient() {
                     />
                   </div>
                 </div>
-                <div className="pt-2">
+                <div className="pt-2 flex justify-center md:justify-start">
                   <button className="px-4 py-2 bg-surface-container-lowest border border-secondary text-secondary rounded font-label-md text-label-md hover:bg-background-subtle transition-colors">
                     Save Changes
                   </button>
@@ -142,7 +142,9 @@ export default function SettingsClient() {
                 Generate Key
               </button>
             </div>
-            <div className="overflow-x-auto">
+            
+            {/* Desktop Table View */}
+            <div className="overflow-x-auto hidden md:block">
               <table className="w-full text-left border-collapse">
                 <thead>
                   <tr className="border-b border-border-light bg-background-subtle">
@@ -172,8 +174,31 @@ export default function SettingsClient() {
                 </tbody>
               </table>
             </div>
-          </section>
 
+            {/* Mobile Cards View */}
+            <div className="block md:hidden divide-y divide-border-light/50">
+              <div className="py-3 space-y-2">
+                <div className="flex justify-between items-center">
+                  <span className="font-medium text-on-surface">Production App</span>
+                  <button className="text-error hover:text-on-primary-fixed-variant font-label-sm text-label-sm transition-colors">Revoke</button>
+                </div>
+                <div className="flex justify-between text-xs text-secondary font-mono-code">
+                  <span>Prefix: vltz_prod_...</span>
+                  <span>Created: Oct 24, 2023</span>
+                </div>
+              </div>
+              <div className="py-3 space-y-2">
+                <div className="flex justify-between items-center">
+                  <span className="font-medium text-on-surface">Zapier Integration</span>
+                  <button className="text-error hover:text-on-primary-fixed-variant font-label-sm text-label-sm transition-colors">Revoke</button>
+                </div>
+                <div className="flex justify-between text-xs text-secondary font-mono-code">
+                  <span>Prefix: vltz_zap_...</span>
+                  <span>Created: Nov 02, 2023</span>
+                </div>
+              </div>
+            </div>
+          </section>
         </div>
       </div>
     </div>

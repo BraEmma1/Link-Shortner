@@ -33,7 +33,7 @@ export default function RootLayout({
           rel="stylesheet"
         />
       </head>
-      <body className="bg-background text-on-surface font-body-md antialiased">
+      <body className="bg-background text-on-surface font-body-md antialiased" suppressHydrationWarning>
         {/* Warms up the Express backend immediately and keeps it alive every 14 min */}
         <KeepAliveProvider />
         <AuthProvider>{children}</AuthProvider>

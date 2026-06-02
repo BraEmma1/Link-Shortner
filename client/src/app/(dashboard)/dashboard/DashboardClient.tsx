@@ -77,7 +77,7 @@ export default function DashboardClient() {
       </div>
 
       {/* ── KPI Cards ─────────────────────────────────────────────── */}
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-gutter mb-gutter">
+      <div className="grid grid-cols-2 lg:grid-cols-4 gap-4 md:gap-gutter mb-gutter">
         <KpiCard
           icon="link"
           title="Total Links"
@@ -203,7 +203,7 @@ export default function DashboardClient() {
         </div>
       </div>
 
-      {/* ── Recent Links Table ─────────────────────────────────────── */}
+      {/* ── Recent Links Table / Cards on Mobile ───────────────────── */}
       <div className="bg-surface-container-lowest rounded-lg border border-border-light shadow-sm overflow-hidden flex flex-col mb-12">
         <div className="p-gutter border-b border-border-light flex justify-between items-center">
           <h3 className="font-headline-md text-headline-md text-on-background">
@@ -216,7 +216,9 @@ export default function DashboardClient() {
             View All
           </Link>
         </div>
-        <div className="overflow-x-auto">
+
+        {/* Desktop View Table */}
+        <div className="overflow-x-auto hidden md:block">
           <table className="w-full text-left border-collapse min-w-[700px]">
             <thead>
               <tr className="bg-[#F1F5F9] border-b border-border-light">
@@ -263,6 +265,54 @@ export default function DashboardClient() {
               ))}
             </tbody>
           </table>
+        </div>
+
+        {/* Mobile View Cards List */}
+        <div className="block md:hidden divide-y divide-border-light/50">
+          {data.topLinks?.length === 0 ? (
+            <div className="py-8 text-center text-secondary text-sm">No links created yet.</div>
+          ) : (
+            data.topLinks?.map((link: any) => (
+              <div key={link._id} className="p-4 flex items-center justify-between hover:bg-background-subtle transition-all">
+                <div className="flex gap-3 overflow-hidden">
+                  <div className="flex-shrink-0 w-10 h-10 bg-primary/5 rounded-lg flex items-center justify-center">
+                    <span className="material-symbols-outlined text-primary text-xl">description</span>
+                  </div>
+                  <div className="overflow-hidden">
+                    <h4 className="font-label-md text-label-md text-on-surface truncate max-w-[180px]">
+                      {link.title || 'Untitled'}
+                    </h4>
+                    <div className="flex items-center gap-1.5 mt-0.5">
+                      <span className="font-mono-code text-[11px] text-tertiary bg-surface-container px-1.5 py-0.5 rounded truncate max-w-[150px]">
+                        {link.shortUrl?.replace(/^https?:\/\//, '') || link.slug}
+                      </span>
+                      <button 
+                        onClick={() => {
+                          navigator.clipboard.writeText(link.shortUrl);
+                        }}
+                        className="text-secondary hover:text-primary transition-colors"
+                        title="Copy link"
+                      >
+                        <span className="material-symbols-outlined text-sm">content_copy</span>
+                      </button>
+                    </div>
+                  </div>
+                </div>
+                <div className="flex flex-col items-end shrink-0 ml-3">
+                  <span className="font-label-md text-label-md text-on-surface font-semibold">
+                    {link.clicks.toLocaleString()}
+                  </span>
+                  <span className="font-label-sm text-label-sm text-secondary">clicks</span>
+                  <div className="flex items-center gap-1.5 mt-1">
+                    <span className={`w-1.5 h-1.5 rounded-full ${link.status === 'active' ? 'bg-[#1FB07E]' : 'bg-secondary'}`}></span>
+                    <Link href={`/analytics?linkId=${link._id}`} className="text-primary text-xs hover:underline flex items-center">
+                      <span className="material-symbols-outlined text-base">bar_chart</span>
+                    </Link>
+                  </div>
+                </div>
+              </div>
+            ))
+          )}
         </div>
       </div>
     </>

@@ -21,8 +21,8 @@ export default function TopNavBar({ onCreateLink }: TopNavBarProps) {
     : 'VL';
 
   return (
-    <header className="sticky top-0 w-full z-40 bg-surface-container-lowest border-b border-border-light shadow-sm flex justify-between items-center px-margin-desktop py-unit h-16">
-      {/* ── Left: Search ───────────────────────────────── */}
+    <header className="sticky top-0 w-full z-40 bg-surface-container-lowest border-b border-border-light shadow-sm flex justify-between items-center px-margin-mobile md:px-margin-desktop py-unit h-16">
+      {/* ── Left: Search / Mobile Brand ────────────────── */}
       <div className="flex items-center flex-1 max-w-md">
         {/* Desktop search */}
         <div className="relative w-full hidden md:block">
@@ -37,33 +37,36 @@ export default function TopNavBar({ onCreateLink }: TopNavBarProps) {
           />
         </div>
 
-        {/* Mobile brand fallback */}
-        <h1 className="md:hidden font-headline-md text-headline-lg-mobile font-bold text-primary">
-          Vaultz Links
-        </h1>
+        {/* Mobile brand fallback with link icon */}
+        <div className="flex md:hidden items-center gap-2">
+          <span className="material-symbols-outlined text-primary text-[24px]">link</span>
+          <h1 className="font-headline-md text-headline-lg-mobile font-bold text-primary">
+            Vaultz Links
+          </h1>
+        </div>
       </div>
 
       {/* ── Right: Actions & Profile ───────────────────── */}
       <div className="flex items-center gap-4">
         {/* Notifications */}
-        <button suppressHydrationWarning className="text-on-surface-variant hover:text-primary transition-colors flex items-center justify-center w-10 h-10 rounded-full hover:bg-background-subtle">
+        <button suppressHydrationWarning className="hidden md:flex text-on-surface-variant hover:text-primary transition-colors items-center justify-center w-10 h-10 rounded-full hover:bg-background-subtle">
           <span className="material-symbols-outlined">notifications</span>
         </button>
 
         {/* Help */}
-        <button suppressHydrationWarning className="text-on-surface-variant hover:text-primary transition-colors flex items-center justify-center w-10 h-10 rounded-full hover:bg-background-subtle">
+        <button suppressHydrationWarning className="hidden md:flex text-on-surface-variant hover:text-primary transition-colors items-center justify-center w-10 h-10 rounded-full hover:bg-background-subtle">
           <span className="material-symbols-outlined">help</span>
         </button>
 
         {/* Divider */}
-        <div className="h-6 w-px bg-border-light mx-2" />
+        <div className="hidden md:block h-6 w-px bg-border-light mx-2" />
 
         {/* Create Link CTA */}
         <button
           suppressHydrationWarning
           id="create-link-btn"
           onClick={onCreateLink}
-          className="flex items-center justify-center bg-primary text-white px-4 py-2 rounded-lg font-label-md text-label-md hover:bg-surface-tint transition-colors gap-2 min-h-[40px]"
+          className="hidden md:flex items-center justify-center bg-primary text-white px-4 py-2 rounded-lg font-label-md text-label-md hover:bg-surface-tint transition-colors gap-2 min-h-[40px]"
         >
           <span className="material-symbols-outlined text-[18px]">add</span>
           Create Link

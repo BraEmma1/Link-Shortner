@@ -83,7 +83,7 @@ export default function AnalyticsClient() {
               Deep-dive into link performance and audience behaviour across all your links.
             </p>
           </div>
-          <div className="flex gap-4 items-center bg-surface-container-lowest p-4 rounded-xl border border-border-light shadow-sm">
+          <div className="flex gap-4 items-center bg-surface-container-lowest p-4 rounded-xl border border-border-light shadow-sm w-full md:w-auto justify-center md:justify-start">
             <div className="text-center">
               <p className="text-label-sm text-secondary uppercase font-semibold">Total Clicks</p>
               <p className="text-headline-md font-bold text-primary">
@@ -120,11 +120,13 @@ export default function AnalyticsClient() {
 
         {!isSpecific && data.topLinks && (
           <div className="bg-surface-container-lowest rounded-lg border border-border-light shadow-sm p-6 lg:col-span-2">
-            <h3 className="font-headline-md text-[18px] text-on-background mb-6 flex items-center gap-2">
+            <h3 className="font-headline-md text-[18px] text-on-background mb-6 flex items-center gap-2 border-b border-border-light pb-4">
               <span className="material-symbols-outlined text-primary">local_fire_department</span>
               Top Performing Links
             </h3>
-            <div className="overflow-x-auto">
+            
+            {/* Desktop Table View */}
+            <div className="overflow-x-auto hidden md:block">
               <table className="w-full text-left border-collapse">
                 <thead>
                   <tr className="border-b border-border-light">
@@ -151,6 +153,29 @@ export default function AnalyticsClient() {
                   ))}
                 </tbody>
               </table>
+            </div>
+
+            {/* Mobile Cards View */}
+            <div className="block md:hidden divide-y divide-border-light/50">
+              {data.topLinks.length === 0 ? (
+                <div className="py-4 text-center text-secondary text-sm">No clicks recorded yet.</div>
+              ) : data.topLinks.map((link: any) => (
+                <div key={link._id} className="py-3 flex items-center justify-between">
+                  <div className="overflow-hidden pr-2">
+                    <h4 className="font-label-md text-label-md text-on-surface truncate">{link.title || 'Untitled'}</h4>
+                    <p className="font-mono-code text-xs text-secondary mt-0.5 truncate">{link.shortUrl?.replace(/^https?:\/\//, '') || link.slug}</p>
+                  </div>
+                  <div className="flex items-center gap-3 shrink-0">
+                    <div className="text-right">
+                      <span className="font-label-md text-label-md text-on-surface font-semibold">{link.clicks.toLocaleString()}</span>
+                      <p className="text-[10px] text-secondary">clicks</p>
+                    </div>
+                    <Link href={`/analytics?linkId=${link._id}`} className="text-primary p-2 bg-surface-container-low hover:bg-surface-variant rounded">
+                      <span className="material-symbols-outlined text-[16px]">chevron_right</span>
+                    </Link>
+                  </div>
+                </div>
+              ))}
             </div>
           </div>
         )}
@@ -195,8 +220,8 @@ export default function AnalyticsClient() {
             </div>
 
             {/* Overview Stats & QR Preview */}
-            <div className="grid grid-cols-1 md:grid-cols-4 gap-gutter">
-              <div className="md:col-span-3 grid grid-cols-1 sm:grid-cols-3 gap-gutter">
+            <div className="grid grid-cols-1 md:grid-cols-4 gap-4 md:gap-gutter">
+              <div className="md:col-span-3 grid grid-cols-2 sm:grid-cols-3 gap-4 md:gap-gutter">
                 <div className="bg-surface-container-lowest p-6 rounded-lg border border-border-light shadow-sm hover:shadow-md transition-shadow">
                   <p className="font-label-sm text-label-sm text-secondary uppercase mb-2">Total Clicks</p>
                   <p className="font-display-lg text-display-lg text-on-surface">{data.linkDetails?.totalClicks?.toLocaleString() || 0}</p>
@@ -205,7 +230,7 @@ export default function AnalyticsClient() {
                   <p className="font-label-sm text-label-sm text-secondary uppercase mb-2">Unique Visitors</p>
                   <p className="font-display-lg text-display-lg text-on-surface">{data.linkDetails?.uniqueVisitors?.toLocaleString() || 0}</p>
                 </div>
-                <div className="bg-surface-container-lowest p-6 rounded-lg border border-border-light shadow-sm hover:shadow-md transition-shadow">
+                <div className="bg-surface-container-lowest p-6 rounded-lg border border-border-light shadow-sm hover:shadow-md transition-shadow col-span-2 sm:col-span-1">
                   <p className="font-label-sm text-label-sm text-secondary uppercase mb-2">Unique Countries</p>
                   <p className="font-display-lg text-display-lg text-on-surface">{data.geographicDistribution?.length || 0}</p>
                 </div>
@@ -349,7 +374,9 @@ export default function AnalyticsClient() {
               {/* Browsers List */}
               <div className="bg-surface-container-lowest p-6 rounded-lg border border-border-light shadow-sm col-span-1 md:col-span-1 lg:col-span-2">
                 <h3 className="font-headline-md text-body-lg font-semibold text-on-surface mb-4">Browsers</h3>
-                <div className="overflow-x-auto">
+                
+                {/* Desktop View Table */}
+                <div className="overflow-x-auto hidden md:block">
                   <table className="w-full text-left border-collapse">
                     <thead>
                       <tr className="border-b border-border-light">
@@ -372,6 +399,24 @@ export default function AnalyticsClient() {
                       ))}
                     </tbody>
                   </table>
+                </div>
+
+                {/* Mobile View Cards */}
+                <div className="block md:hidden divide-y divide-border-light/50">
+                  {data.browserBreakdown?.length === 0 ? (
+                    <div className="py-4 text-center text-secondary text-sm">No browser data.</div>
+                  ) : data.browserBreakdown?.map((browser: any) => (
+                    <div key={browser.browser} className="py-3 flex justify-between items-center text-sm">
+                      <div className="flex items-center gap-2 text-on-surface">
+                        <span className="material-symbols-outlined text-secondary text-base">public</span>
+                        <span>{browser.browser}</span>
+                      </div>
+                      <div className="text-right">
+                        <span className="font-semibold text-on-surface">{browser.percentage}%</span>
+                        <span className="text-secondary text-xs ml-1.5">({browser.count})</span>
+                      </div>
+                    </div>
+                  ))}
                 </div>
               </div>
 

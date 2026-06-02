@@ -63,7 +63,7 @@ api.interceptors.response.use(
         document.cookie = 'vaultz_token=; Max-Age=0; path=/';
       }
       // Redirect to login (client-side)
-      if (typeof window !== 'undefined') {
+      if (typeof window !== 'undefined' && !window.location.pathname.startsWith('/login')) {
         window.location.href = '/login';
       }
     }
