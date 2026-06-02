@@ -4,8 +4,18 @@ import axios, { AxiosError, InternalAxiosRequestConfig } from 'axios';
 // Axios Instance
 // ─────────────────────────────────────────────
 
+const getBaseURL = () => {
+  const url = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:5000/api';
+  // Strip trailing slashes, then append /api if it doesn't end with /api
+  const cleanedUrl = url.trim().replace(/\/$/, '');
+  if (!cleanedUrl.endsWith('/api')) {
+    return `${cleanedUrl}/api`;
+  }
+  return cleanedUrl;
+};
+
 const api = axios.create({
-  baseURL: process.env.NEXT_PUBLIC_API_URL || 'http://localhost:5000/api',
+  baseURL: getBaseURL(),
   timeout: 15000,
   headers: {
     'Content-Type': 'application/json',

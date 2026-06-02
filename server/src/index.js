@@ -66,22 +66,31 @@ const rawOrigins = process.env.CLIENT_URL
   ? process.env.CLIENT_URL.split(',').map((o) => o.trim())
   : ['http://localhost:3000'];
 
-// Convert entries like *.vercel.app into RegExp for pattern matching
+// Convert entries like *.vercel.app into RegExp for pattern matching, ensuring they are standardized
 const allowedOrigins = rawOrigins.map((o) => {
-  if (o.includes('*')) {
-    const escaped = o.replace(/[.+?^${}()|[\]\\]/g, '\\$&').replace(/\*/g, '.*');
-    return new RegExp(`^${escaped}$`);
+  // Strip protocol and trailing slash for standardization if it's not a wildcard
+  let clean = o.trim();
+  if (clean !== '*') {
+    clean = clean.replace(/^https?:\/\//i, '').replace(/\/$/, '');
   }
-  return o;
+  if (clean.includes('*')) {
+    const escaped = clean.replace(/[.+?^${}()|[\]\\]/g, '\\$&').replace(/\*/g, '.*');
+    return new RegExp(`^(https?:\\/\\/)?([^\\/]+\\.)?${escaped}$`, 'i');
+  }
+  return clean;
 });
 
 const isOriginAllowed = (origin) => {
+  const cleanOrigin = origin.replace(/^https?:\/\//i, '').replace(/\/$/, '');
   return allowedOrigins.some((allowed) => {
     if (allowed === '*') return true;
-    if (allowed instanceof RegExp) return allowed.test(origin);
-    return allowed === origin;
+    if (allowed instanceof RegExp) {
+      return allowed.test(origin) || allowed.test(cleanOrigin);
+    }
+    return allowed === cleanOrigin;
   });
 };
+
 
 app.use(
   cors({
