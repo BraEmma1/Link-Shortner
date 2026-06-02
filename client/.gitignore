@@ -1,0 +1,16 @@
+# Dependencies
+node_modules/
+
+# Next.js Build Outputs
+.next/
+out/
+
+# Local Environment Variables
+.env.local
+.env.development.local
+.env.test.local
+.env.production.local
+
+# Serverless logs
+.vercel/
+.netlify/

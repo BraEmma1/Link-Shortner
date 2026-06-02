@@ -1,0 +1,576 @@
+<!DOCTYPE html>
+
+<html class="light" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Vaultz Links - Analytics Detail</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@600;700&amp;family=Inter:wght@400;500;600&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+          darkMode: "class",
+          theme: {
+            extend: {
+              "colors": {
+                      "surface-container-lowest": "#ffffff",
+                      "secondary-fixed-dim": "#b3c6f8",
+                      "on-error": "#ffffff",
+                      "on-surface-variant": "#5c403d",
+                      "sidebar-dark": "#0F172A",
+                      "on-primary-fixed-variant": "#93000f",
+                      "border-light": "#E2E8F0",
+                      "inverse-surface": "#233144",
+                      "on-secondary-container": "#435581",
+                      "surface-variant": "#d5e3fc",
+                      "on-tertiary-fixed-variant": "#004c6e",
+                      "tertiary": "#005a82",
+                      "on-primary": "#ffffff",
+                      "secondary-container": "#b9cbfe",
+                      "on-primary-container": "#ffebe9",
+                      "surface-container-highest": "#d5e3fc",
+                      "primary-container": "#d22528",
+                      "on-tertiary-fixed": "#001e2f",
+                      "on-primary-fixed": "#410003",
+                      "surface-tint": "#bd111c",
+                      "surface-container": "#e6eeff",
+                      "tertiary-fixed": "#c9e6ff",
+                      "on-background": "#0d1c2e",
+                      "surface-container-high": "#dce9ff",
+                      "on-secondary": "#ffffff",
+                      "secondary-fixed": "#d9e2ff",
+                      "on-tertiary": "#ffffff",
+                      "primary-fixed-dim": "#ffb3ac",
+                      "surface-dim": "#ccdbf3",
+                      "on-surface": "#0d1c2e",
+                      "outline": "#906f6c",
+                      "tertiary-container": "#0074a6",
+                      "on-tertiary-container": "#e4f2ff",
+                      "surface-container-low": "#eff4ff",
+                      "on-error-container": "#93000a",
+                      "inverse-primary": "#ffb3ac",
+                      "background-subtle": "#F8FAFC",
+                      "secondary": "#4b5e8a",
+                      "surface": "#f8f9ff",
+                      "tertiary-fixed-dim": "#89ceff",
+                      "background": "#f8f9ff",
+                      "on-secondary-fixed-variant": "#334670",
+                      "inverse-on-surface": "#eaf1ff",
+                      "error": "#ba1a1a",
+                      "primary": "#ad0014",
+                      "on-secondary-fixed": "#021943",
+                      "surface-bright": "#f8f9ff",
+                      "primary-fixed": "#ffdad6",
+                      "error-container": "#ffdad6",
+                      "success-green": "#1FB07E",
+                      "outline-variant": "#e5bdb9"
+              },
+              "borderRadius": {
+                      "DEFAULT": "0.25rem",
+                      "lg": "0.5rem",
+                      "xl": "0.75rem",
+                      "full": "9999px"
+              },
+              "spacing": {
+                      "container-max": "1280px",
+                      "gutter": "24px",
+                      "margin-desktop": "40px",
+                      "margin-mobile": "16px",
+                      "unit": "4px"
+              },
+              "fontFamily": {
+                      "body-sm": [
+                              "Inter"
+                      ],
+                      "headline-md": [
+                              "Plus Jakarta Sans"
+                      ],
+                      "label-md": [
+                              "Inter"
+                      ],
+                      "display-lg": [
+                              "Plus Jakarta Sans"
+                      ],
+                      "body-md": [
+                              "Inter"
+                      ],
+                      "mono-code": [
+                              "ui-monospace"
+                      ],
+                      "label-sm": [
+                              "Inter"
+                      ],
+                      "headline-lg": [
+                              "Plus Jakarta Sans"
+                      ],
+                      "body-lg": [
+                              "Inter"
+                      ],
+                      "headline-lg-mobile": [
+                              "Plus Jakarta Sans"
+                      ]
+              },
+              "fontSize": {
+                      "body-sm": [
+                              "14px",
+                              {
+                                      "lineHeight": "1.5",
+                                      "fontWeight": "400"
+                              }
+                      ],
+                      "headline-md": [
+                              "24px",
+                              {
+                                      "lineHeight": "1.3",
+                                      "fontWeight": "600"
+                              }
+                      ],
+                      "label-md": [
+                              "14px",
+                              {
+                                      "lineHeight": "1",
+                                      "letterSpacing": "0.01em",
+                                      "fontWeight": "600"
+                              }
+                      ],
+                      "display-lg": [
+                              "48px",
+                              {
+                                      "lineHeight": "1.1",
+                                      "letterSpacing": "-0.02em",
+                                      "fontWeight": "700"
+                              }
+                      ],
+                      "body-md": [
+                              "16px",
+                              {
+                                      "lineHeight": "1.5",
+                                      "fontWeight": "400"
+                              }
+                      ],
+                      "mono-code": [
+                              "14px",
+                              {
+                                      "lineHeight": "1.5",
+                                      "fontWeight": "400"
+                              }
+                      ],
+                      "label-sm": [
+                              "12px",
+                              {
+                                      "lineHeight": "1",
+                                      "letterSpacing": "0.02em",
+                                      "fontWeight": "500"
+                              }
+                      ],
+                      "headline-lg": [
+                              "32px",
+                              {
+                                      "lineHeight": "1.2",
+                                      "letterSpacing": "-0.01em",
+                                      "fontWeight": "600"
+                              }
+                      ],
+                      "body-lg": [
+                              "18px",
+                              {
+                                      "lineHeight": "1.6",
+                                      "fontWeight": "400"
+                              }
+                      ],
+                      "headline-lg-mobile": [
+                              "24px",
+                              {
+                                      "lineHeight": "1.2",
+                                      "fontWeight": "600"
+                              }
+                      ]
+              }
+            }
+          }
+        }
+      </script>
+<style>
+          .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+          }
+      </style>
+</head>
+<body class="bg-background-subtle text-on-surface font-body-md text-body-md antialiased overflow-x-hidden flex h-screen">
+<!-- SideNavBar -->
+<nav class="hidden md:flex flex-col h-full p-gutter bg-sidebar-dark shadow-md fixed left-0 top-0 h-screen w-64 z-50">
+<div class="flex items-center gap-3 mb-8 px-2">
+<span class="material-symbols-outlined text-primary text-3xl" data-weight="fill" style="font-variation-settings: 'FILL' 1;">dataset</span>
+<div>
+<h1 class="font-headline-md text-headline-md font-bold text-surface-container-lowest">Vaultz Links</h1>
+<p class="font-label-sm text-label-sm text-secondary-fixed-dim">Enterprise Tier</p>
+</div>
+</div>
+<ul class="flex flex-col gap-2 flex-grow">
+<li>
+<a class="flex items-center gap-3 px-4 py-3 rounded-lg text-secondary-fixed-dim hover:text-surface-container-lowest hover:bg-on-secondary-fixed-variant transition-colors duration-200" href="#">
+<span class="material-symbols-outlined">dashboard</span>
+<span class="font-label-md text-label-md">Dashboard</span>
+</a>
+</li>
+<li>
+<a class="flex items-center gap-3 px-4 py-3 rounded-lg text-secondary-fixed-dim hover:text-surface-container-lowest hover:bg-on-secondary-fixed-variant transition-colors duration-200" href="#">
+<span class="material-symbols-outlined">link</span>
+<span class="font-label-md text-label-md">Links</span>
+</a>
+</li>
+<li>
+<a class="flex items-center gap-3 px-4 py-3 rounded-lg bg-primary-container text-on-primary-container font-bold shadow-sm scale-[0.98] transition-transform" href="#">
+<span class="material-symbols-outlined">analytics</span>
+<span class="font-label-md text-label-md">Analytics</span>
+</a>
+</li>
+<li>
+<a class="flex items-center gap-3 px-4 py-3 rounded-lg text-secondary-fixed-dim hover:text-surface-container-lowest hover:bg-on-secondary-fixed-variant transition-colors duration-200" href="#">
+<span class="material-symbols-outlined">qr_code</span>
+<span class="font-label-md text-label-md">QR Codes</span>
+</a>
+</li>
+<li>
+<a class="flex items-center gap-3 px-4 py-3 rounded-lg text-secondary-fixed-dim hover:text-surface-container-lowest hover:bg-on-secondary-fixed-variant transition-colors duration-200" href="#">
+<span class="material-symbols-outlined">language</span>
+<span class="font-label-md text-label-md">Domains</span>
+</a>
+</li>
+<li>
+<a class="flex items-center gap-3 px-4 py-3 rounded-lg text-secondary-fixed-dim hover:text-surface-container-lowest hover:bg-on-secondary-fixed-variant transition-colors duration-200" href="#">
+<span class="material-symbols-outlined">group</span>
+<span class="font-label-md text-label-md">Team</span>
+</a>
+</li>
+<li>
+<a class="flex items-center gap-3 px-4 py-3 rounded-lg text-secondary-fixed-dim hover:text-surface-container-lowest hover:bg-on-secondary-fixed-variant transition-colors duration-200" href="#">
+<span class="material-symbols-outlined">settings</span>
+<span class="font-label-md text-label-md">Settings</span>
+</a>
+</li>
+</ul>
+<div class="mt-auto pt-4 border-t border-secondary/30">
+<button class="w-full py-2.5 px-4 bg-primary text-on-primary rounded-DEFAULT font-label-md text-label-md hover:bg-surface-tint transition-colors">
+                Upgrade Plan
+            </button>
+</div>
+</nav>
+<!-- Main Content Area -->
+<main class="flex-1 ml-0 md:ml-64 flex flex-col min-h-screen">
+<!-- TopNavBar -->
+<header class="sticky top-0 w-full z-40 bg-surface-container-lowest shadow-sm flex justify-between items-center px-margin-mobile md:px-margin-desktop py-unit h-16">
+<div class="flex items-center gap-4">
+<button class="md:hidden text-on-surface-variant p-2 rounded-full hover:bg-surface-container-low transition-colors">
+<span class="material-symbols-outlined">menu</span>
+</button>
+<div class="relative hidden sm:block">
+<span class="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-on-surface-variant text-sm">search</span>
+<input class="pl-9 pr-4 py-2 bg-background-subtle border border-border-light rounded-DEFAULT text-body-sm focus:outline-none focus:ring-2 focus:ring-secondary focus:bg-surface-container-lowest w-64 transition-all" placeholder="Search..." type="text"/>
+</div>
+</div>
+<div class="flex items-center gap-4">
+<button class="text-on-surface-variant hover:text-primary transition-colors p-2 rounded-full hover:bg-surface-container-low">
+<span class="material-symbols-outlined">notifications</span>
+</button>
+<button class="text-on-surface-variant hover:text-primary transition-colors p-2 rounded-full hover:bg-surface-container-low hidden sm:block">
+<span class="material-symbols-outlined">help</span>
+</button>
+<button class="hidden sm:flex bg-primary text-on-primary px-4 py-2 rounded-DEFAULT font-label-md text-label-md hover:bg-surface-tint transition-colors items-center gap-2">
+<span class="material-symbols-outlined text-sm">add</span> Create Link
+                </button>
+<div class="w-8 h-8 rounded-full bg-secondary-fixed-dim overflow-hidden flex-shrink-0 cursor-pointer border border-border-light ml-2">
+<img alt="User Profile" class="w-full h-full object-cover" data-alt="A professional headshot of a person, likely an executive or developer, used as a profile picture in a sleek, modern, light-mode enterprise web application dashboard. The image is clear, well-lit, and conveys a sense of trust and competence." src="https://lh3.googleusercontent.com/aida-public/AB6AXuCbjCe3foqcb6Xn3j8M22sVFmHPn2Gjrhl0VInHWzjp8UJbynx5P_hzsiFqyiGNUlFBEZ3CGxPWtkCGKh4h5ulpxinmuf_Zh96KMGyO-kxGZsxTdGevsCTYoT09vvPTrQw96DcMkMmz20M4-P2gADLqR2FyDdoXobFUimP9TYKewrIahX5zYwgj0L3lYK4QTfGWMfGZ4DHf4KlV4DY8sv6GZry8Tdw1CcR79fDIajAY7L2uj_uZUL_TDoxWtrbWDx5cE6ZLE0mGlA"/>
+</div>
+</div>
+</header>
+<!-- Page Content -->
+<div class="p-margin-mobile md:p-margin-desktop flex-1 overflow-y-auto w-full max-w-container-max mx-auto space-y-gutter pb-24">
+<!-- Breadcrumb & Header -->
+<div class="flex flex-col gap-2 mb-2">
+<div class="flex items-center gap-2 text-label-sm font-label-sm text-secondary">
+<a class="hover:text-primary transition-colors" href="#">Analytics</a>
+<span class="material-symbols-outlined text-[14px]">chevron_right</span>
+<span class="text-on-surface">Detail</span>
+</div>
+<div class="flex justify-between items-start md:items-end flex-col md:flex-row gap-4">
+<div>
+<h2 class="font-headline-lg-mobile md:font-headline-lg text-headline-lg-mobile md:text-headline-lg text-on-surface mb-1">Q3 Marketing Campaign</h2>
+<div class="flex items-center gap-3 flex-wrap">
+<span class="bg-surface-container px-3 py-1 rounded-full font-mono-code text-mono-code text-tertiary-container border border-tertiary-fixed">vltz.ly/q3-promo</span>
+<span class="material-symbols-outlined text-secondary text-sm cursor-pointer hover:text-primary transition-colors">content_copy</span>
+<span class="text-secondary text-body-sm hidden sm:inline">→ https://www.example.com/marketing/q3-promotions-2023-long-url</span>
+</div>
+</div>
+<div class="flex gap-3">
+<button class="bg-surface-container-lowest border border-secondary text-secondary px-4 py-2 rounded-DEFAULT font-label-md text-label-md flex items-center gap-2 hover:bg-background-subtle transition-colors">
+<span class="material-symbols-outlined text-sm">download</span> Export
+                        </button>
+</div>
+</div>
+</div>
+<!-- Overview Stats & QR Preview -->
+<div class="grid grid-cols-1 md:grid-cols-4 gap-gutter">
+<div class="md:col-span-3 grid grid-cols-1 sm:grid-cols-3 gap-gutter">
+<div class="bg-surface-container-lowest p-6 rounded-lg border border-border-light shadow-sm hover:shadow-md transition-shadow">
+<p class="font-label-sm text-label-sm text-secondary uppercase mb-2">Total Clicks</p>
+<p class="font-display-lg text-display-lg text-on-surface">24,592</p>
+<p class="font-label-sm text-label-sm text-success-green flex items-center mt-2">
+<span class="material-symbols-outlined text-[14px]">trending_up</span> +12.4% <span class="text-secondary ml-1 font-normal">vs last week</span>
+</p>
+</div>
+<div class="bg-surface-container-lowest p-6 rounded-lg border border-border-light shadow-sm hover:shadow-md transition-shadow">
+<p class="font-label-sm text-label-sm text-secondary uppercase mb-2">Unique Visitors</p>
+<p class="font-display-lg text-display-lg text-on-surface">18,201</p>
+<p class="font-label-sm text-label-sm text-success-green flex items-center mt-2">
+<span class="material-symbols-outlined text-[14px]">trending_up</span> +8.1% <span class="text-secondary ml-1 font-normal">vs last week</span>
+</p>
+</div>
+<div class="bg-surface-container-lowest p-6 rounded-lg border border-border-light shadow-sm hover:shadow-md transition-shadow">
+<p class="font-label-sm text-label-sm text-secondary uppercase mb-2">Avg. Time (Est)</p>
+<p class="font-display-lg text-display-lg text-on-surface">1m 42s</p>
+<p class="font-label-sm text-label-sm text-secondary flex items-center mt-2">
+<span class="material-symbols-outlined text-[14px]">trending_flat</span> 0.0% <span class="text-secondary ml-1 font-normal">vs last week</span>
+</p>
+</div>
+</div>
+<!-- QR Code Card -->
+<div class="bg-surface-container-lowest p-6 rounded-lg border border-border-light shadow-sm flex flex-col items-center justify-center relative overflow-hidden group">
+<!-- decorative background element -->
+<div class="absolute -right-8 -top-8 w-24 h-24 bg-surface-container rounded-full opacity-50 pointer-events-none"></div>
+<img alt="QR Code" class="w-24 h-24 mb-4" data-alt="A clean, sharp, high-contrast QR code generated for a URL, displayed prominently in the center of a minimalist white card within an enterprise analytics dashboard. The styling is simple and functional, using deep navy/black for the code blocks on a pure white background." src="https://lh3.googleusercontent.com/aida-public/AB6AXuC8b707JN7slhj3pW6SLSYtcJrM1pdbsnztt3OhLHiAzSMKwHl6i6loZN_qEpR1mP41PSPCmsRx8h066X3sGz_B4_tOa4t4S8ORwzsY-ir2JAK4_h0hG1a666ND2mOhyj-Woz1qa2PogOKXwSx-poJlwqE6uodtmx31h7YG4QI7y-Hmkaj1WaKeZAJjxK3NREI1WpIRnYNHPHlki-noD6Ea5jEPEWOjsPFq0ABwCgBb-PKGb3id7wtmugTsBO_5k-FJN6C__jnheg"/>
+<button class="text-primary font-label-sm text-label-sm hover:underline flex items-center gap-1">
+                        Download QR <span class="material-symbols-outlined text-[14px]">download</span>
+</button>
+</div>
+</div>
+<!-- Chart Section: Clicks Over Time -->
+<div class="bg-surface-container-lowest p-6 rounded-lg border border-border-light shadow-sm">
+<div class="flex justify-between items-center mb-6">
+<h3 class="font-headline-md text-headline-md text-on-surface">Clicks Over Time</h3>
+<select class="bg-background-subtle border border-border-light rounded-DEFAULT text-body-sm py-1 px-3 focus:outline-none focus:ring-2 focus:ring-secondary">
+<option>Last 30 Days</option>
+<option>Last 7 Days</option>
+<option>This Year</option>
+</select>
+</div>
+<!-- Placeholder for Chart -->
+<div class="h-64 w-full relative flex items-end">
+<!-- Y Axis Labels -->
+<div class="absolute left-0 top-0 h-full flex flex-col justify-between text-label-sm font-label-sm text-secondary pb-6">
+<span>1.5k</span>
+<span>1.0k</span>
+<span>0.5k</span>
+<span>0</span>
+</div>
+<!-- Chart Area -->
+<div class="ml-10 w-full h-full relative border-b border-l border-border-light pb-6 pl-2">
+<!-- Horizontal grid lines -->
+<div class="absolute w-full h-[1px] bg-border-light/50 top-0"></div>
+<div class="absolute w-full h-[1px] bg-border-light/50 top-1/3"></div>
+<div class="absolute w-full h-[1px] bg-border-light/50 top-2/3"></div>
+<!-- SVG Line Graph visualization -->
+<svg class="w-full h-full absolute bottom-6 left-2 overflow-visible" preserveaspectratio="none" viewbox="0 0 100 100">
+<defs>
+<lineargradient id="gradient-primary" x1="0" x2="0" y1="0" y2="1">
+<stop offset="0%" stop-color="#ad0014" stop-opacity="0.2"></stop>
+<stop offset="100%" stop-color="#ad0014" stop-opacity="0"></stop>
+</lineargradient>
+</defs>
+<path d="M0,80 Q10,75 20,60 T40,40 T60,50 T80,20 T100,10 L100,100 L0,100 Z" fill="url(#gradient-primary)"></path>
+<path d="M0,80 Q10,75 20,60 T40,40 T60,50 T80,20 T100,10" fill="none" stroke="#ad0014" stroke-width="2" vector-effect="non-scaling-stroke"></path>
+<!-- Data Points -->
+<circle cx="20" cy="60" fill="#ffffff" r="3" stroke="#ad0014" stroke-width="2" vector-effect="non-scaling-stroke"></circle>
+<circle cx="40" cy="40" fill="#ffffff" r="3" stroke="#ad0014" stroke-width="2" vector-effect="non-scaling-stroke"></circle>
+<circle cx="60" cy="50" fill="#ffffff" r="3" stroke="#ad0014" stroke-width="2" vector-effect="non-scaling-stroke"></circle>
+<circle cx="80" cy="20" fill="#ffffff" r="3" stroke="#ad0014" stroke-width="2" vector-effect="non-scaling-stroke"></circle>
+<circle cx="100" cy="10" fill="#ffffff" r="3" stroke="#ad0014" stroke-width="2" vector-effect="non-scaling-stroke"></circle>
+</svg>
+<!-- X Axis Labels -->
+<div class="absolute -bottom-6 w-full flex justify-between text-label-sm font-label-sm text-secondary pr-2">
+<span>Sep 1</span>
+<span>Sep 8</span>
+<span>Sep 15</span>
+<span>Sep 22</span>
+<span>Sep 29</span>
+</div>
+</div>
+</div>
+</div>
+<!-- Grid of Cards (Bento style) -->
+<div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-gutter">
+<!-- Top Countries List -->
+<div class="bg-surface-container-lowest p-6 rounded-lg border border-border-light shadow-sm col-span-1 lg:col-span-1 flex flex-col">
+<h3 class="font-headline-md text-body-lg font-semibold text-on-surface mb-4">Top Countries</h3>
+<div class="flex-1 space-y-4">
+<div class="flex items-center justify-between">
+<div class="flex items-center gap-3">
+<span class="text-xl">🇺🇸</span>
+<span class="font-body-md text-body-sm text-on-surface">United States</span>
+</div>
+<span class="font-label-sm text-label-sm text-secondary">42% (10,328)</span>
+</div>
+<div class="w-full bg-background-subtle h-1.5 rounded-full overflow-hidden">
+<div class="bg-secondary h-full" style="width: 42%"></div>
+</div>
+<div class="flex items-center justify-between pt-2">
+<div class="flex items-center gap-3">
+<span class="text-xl">🇬🇧</span>
+<span class="font-body-md text-body-sm text-on-surface">United Kingdom</span>
+</div>
+<span class="font-label-sm text-label-sm text-secondary">18% (4,426)</span>
+</div>
+<div class="w-full bg-background-subtle h-1.5 rounded-full overflow-hidden">
+<div class="bg-secondary h-full" style="width: 18%"></div>
+</div>
+<div class="flex items-center justify-between pt-2">
+<div class="flex items-center gap-3">
+<span class="text-xl">🇨🇦</span>
+<span class="font-body-md text-body-sm text-on-surface">Canada</span>
+</div>
+<span class="font-label-sm text-label-sm text-secondary">12% (2,951)</span>
+</div>
+<div class="w-full bg-background-subtle h-1.5 rounded-full overflow-hidden">
+<div class="bg-secondary h-full" style="width: 12%"></div>
+</div>
+<div class="flex items-center justify-between pt-2">
+<div class="flex items-center gap-3">
+<span class="text-xl">🇩🇪</span>
+<span class="font-body-md text-body-sm text-on-surface">Germany</span>
+</div>
+<span class="font-label-sm text-label-sm text-secondary">8% (1,967)</span>
+</div>
+<div class="w-full bg-background-subtle h-1.5 rounded-full overflow-hidden">
+<div class="bg-secondary h-full" style="width: 8%"></div>
+</div>
+</div>
+</div>
+<!-- Referrers (Horizontal Bar) -->
+<div class="bg-surface-container-lowest p-6 rounded-lg border border-border-light shadow-sm col-span-1 lg:col-span-2">
+<h3 class="font-headline-md text-body-lg font-semibold text-on-surface mb-6">Referrers</h3>
+<div class="space-y-5">
+<!-- Bar 1 -->
+<div>
+<div class="flex justify-between font-body-sm text-body-sm mb-1">
+<span class="text-on-surface flex items-center gap-2">
+<span class="w-2 h-2 rounded-full bg-primary"></span> Direct / Email
+                                </span>
+<span class="text-secondary">8,450</span>
+</div>
+<div class="w-full bg-background-subtle h-2 rounded-full overflow-hidden">
+<div class="bg-primary h-full rounded-full" style="width: 35%"></div>
+</div>
+</div>
+<!-- Bar 2 -->
+<div>
+<div class="flex justify-between font-body-sm text-body-sm mb-1">
+<span class="text-on-surface flex items-center gap-2">
+<span class="w-2 h-2 rounded-full bg-tertiary"></span> Twitter (X)
+                                </span>
+<span class="text-secondary">6,200</span>
+</div>
+<div class="w-full bg-background-subtle h-2 rounded-full overflow-hidden">
+<div class="bg-tertiary h-full rounded-full" style="width: 25%"></div>
+</div>
+</div>
+<!-- Bar 3 -->
+<div>
+<div class="flex justify-between font-body-sm text-body-sm mb-1">
+<span class="text-on-surface flex items-center gap-2">
+<span class="w-2 h-2 rounded-full bg-secondary"></span> LinkedIn
+                                </span>
+<span class="text-secondary">4,150</span>
+</div>
+<div class="w-full bg-background-subtle h-2 rounded-full overflow-hidden">
+<div class="bg-secondary h-full rounded-full" style="width: 17%"></div>
+</div>
+</div>
+<!-- Bar 4 -->
+<div>
+<div class="flex justify-between font-body-sm text-body-sm mb-1">
+<span class="text-on-surface flex items-center gap-2">
+<span class="w-2 h-2 rounded-full bg-surface-variant"></span> Google Search
+                                </span>
+<span class="text-secondary">3,500</span>
+</div>
+<div class="w-full bg-background-subtle h-2 rounded-full overflow-hidden">
+<div class="bg-surface-variant h-full rounded-full" style="width: 14%"></div>
+</div>
+</div>
+</div>
+</div>
+<!-- Devices (Donut Chart representation) -->
+<div class="bg-surface-container-lowest p-6 rounded-lg border border-border-light shadow-sm col-span-1 flex flex-col items-center">
+<h3 class="font-headline-md text-body-lg font-semibold text-on-surface mb-4 self-start w-full">Devices</h3>
+<div class="relative w-40 h-40 mt-2 mb-6">
+<svg class="w-full h-full transform -rotate-90" viewbox="0 0 100 100">
+<!-- Background circle -->
+<circle cx="50" cy="50" fill="transparent" r="40" stroke="#f8fafc" stroke-width="15"></circle>
+<!-- Mobile (Primary Red) -->
+<circle class="transition-all duration-1000" cx="50" cy="50" fill="transparent" r="40" stroke="#ad0014" stroke-dasharray="251.2" stroke-dashoffset="75" stroke-width="15"></circle>
+<!-- Desktop (Deep Blue / Secondary) -->
+<circle class="transition-all duration-1000" cx="50" cy="50" fill="transparent" r="40" stroke="#4b5e8a" stroke-dasharray="251.2" stroke-dashoffset="175" stroke-width="15"></circle>
+<!-- Tablet (Light Blue / Tertiary Container) -->
+<circle class="transition-all duration-1000" cx="50" cy="50" fill="transparent" r="40" stroke="#0074a6" stroke-dasharray="251.2" stroke-dashoffset="230" stroke-width="15"></circle>
+</svg>
+<div class="absolute inset-0 flex flex-col items-center justify-center text-center">
+<span class="font-label-sm text-label-sm text-secondary">Mobile</span>
+<span class="font-headline-md text-headline-md text-on-surface">65%</span>
+</div>
+</div>
+<div class="w-full flex justify-center gap-4 text-label-sm font-label-sm text-secondary">
+<div class="flex items-center gap-1"><span class="w-3 h-3 rounded bg-primary"></span> Mobile</div>
+<div class="flex items-center gap-1"><span class="w-3 h-3 rounded bg-secondary"></span> Desktop</div>
+<div class="flex items-center gap-1"><span class="w-3 h-3 rounded bg-tertiary-container"></span> Tablet</div>
+</div>
+</div>
+<!-- Browsers List (replacing bar chart for variety in this smaller tile) -->
+<div class="bg-surface-container-lowest p-6 rounded-lg border border-border-light shadow-sm col-span-1 md:col-span-1 lg:col-span-2">
+<h3 class="font-headline-md text-body-lg font-semibold text-on-surface mb-4">Browsers</h3>
+<div class="overflow-x-auto">
+<table class="w-full text-left border-collapse">
+<thead>
+<tr class="border-b border-border-light">
+<th class="pb-2 font-label-sm text-label-sm text-secondary font-medium uppercase tracking-wider">Browser</th>
+<th class="pb-2 font-label-sm text-label-sm text-secondary font-medium uppercase tracking-wider text-right">Visits</th>
+<th class="pb-2 font-label-sm text-label-sm text-secondary font-medium uppercase tracking-wider text-right">% of Total</th>
+</tr>
+</thead>
+<tbody class="text-body-sm font-body-sm">
+<tr class="border-b border-border-light/50 hover:bg-background-subtle transition-colors">
+<td class="py-3 flex items-center gap-2 text-on-surface">
+<span class="material-symbols-outlined text-secondary text-[18px]">public</span> Chrome
+                                     </td>
+<td class="py-3 text-right text-secondary">14,263</td>
+<td class="py-3 text-right font-medium text-on-surface">58%</td>
+</tr>
+<tr class="border-b border-border-light/50 hover:bg-background-subtle transition-colors">
+<td class="py-3 flex items-center gap-2 text-on-surface">
+<span class="material-symbols-outlined text-secondary text-[18px]">explore</span> Safari
+                                     </td>
+<td class="py-3 text-right text-secondary">6,148</td>
+<td class="py-3 text-right font-medium text-on-surface">25%</td>
+</tr>
+<tr class="border-b border-border-light/50 hover:bg-background-subtle transition-colors">
+<td class="py-3 flex items-center gap-2 text-on-surface">
+<span class="material-symbols-outlined text-secondary text-[18px]">language</span> Firefox
+                                     </td>
+<td class="py-3 text-right text-secondary">2,459</td>
+<td class="py-3 text-right font-medium text-on-surface">10%</td>
+</tr>
+<tr class="hover:bg-background-subtle transition-colors">
+<td class="py-3 flex items-center gap-2 text-on-surface">
+<span class="material-symbols-outlined text-secondary text-[18px]">web</span> Edge
+                                     </td>
+<td class="py-3 text-right text-secondary">1,722</td>
+<td class="py-3 text-right font-medium text-on-surface">7%</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+</div>
+</div>
+</main>
+</body></html>
