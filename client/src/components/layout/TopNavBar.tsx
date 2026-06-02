@@ -1,5 +1,6 @@
 'use client';
 
+import { useState } from 'react';
 import { useAuth } from '@/context/AuthContext';
 
 interface TopNavBarProps {
@@ -8,7 +9,8 @@ interface TopNavBarProps {
 }
 
 export default function TopNavBar({ onCreateLink }: TopNavBarProps) {
-  const { user } = useAuth();
+  const { user, logout } = useAuth();
+  const [isDropdownOpen, setIsDropdownOpen] = useState(false);
 
   // Build initials from display name (e.g. "John Doe" → "JD")
   const initials = user?.name
@@ -72,9 +74,43 @@ export default function TopNavBar({ onCreateLink }: TopNavBarProps) {
           Create Link
         </button>
 
-        {/* User Avatar */}
-        <div className="w-8 h-8 rounded-full bg-secondary-container text-on-secondary-container flex items-center justify-center font-label-md text-label-md ml-2 border border-border-light select-none cursor-pointer shrink-0">
-          {initials}
+        {/* User Avatar & Dropdown */}
+        <div className="relative">
+          <button
+            onClick={() => setIsDropdownOpen((v) => !v)}
+            className="w-8 h-8 rounded-full bg-secondary-container text-on-secondary-container flex items-center justify-center font-label-md text-label-md ml-2 border border-border-light select-none cursor-pointer shrink-0 hover:ring-2 hover:ring-primary/20 transition-all outline-none"
+            aria-label="User menu"
+          >
+            {initials}
+          </button>
+
+          {isDropdownOpen && (
+            <>
+              {/* Overlay backdrop to close dropdown on click outside */}
+              <div
+                className="fixed inset-0 z-40 bg-transparent"
+                onClick={() => setIsDropdownOpen(false)}
+              />
+              <div className="absolute right-0 mt-2 w-48 bg-surface-container-lowest border border-border-light rounded-xl shadow-lg py-1 z-50 animate-fadeIn">
+                {user && (
+                  <div className="px-4 py-2.5 border-b border-border-light">
+                    <p className="font-semibold text-[13px] text-on-surface truncate">{user.name}</p>
+                    <p className="text-[11px] text-secondary truncate mt-0.5">{user.email}</p>
+                  </div>
+                )}
+                <button
+                  onClick={() => {
+                    setIsDropdownOpen(false);
+                    logout();
+                  }}
+                  className="w-full text-left px-4 py-2.5 text-[13px] font-medium text-primary hover:bg-background-subtle flex items-center gap-2 transition-colors outline-none"
+                >
+                  <span className="material-symbols-outlined text-[18px]">logout</span>
+                  Logout
+                </button>
+              </div>
+            </>
+          )}
         </div>
       </div>
     </header>
