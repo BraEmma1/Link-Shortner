@@ -16,4 +16,13 @@ router.get('/', (req, res) => {
   });
 });
 
+router.get('/debug', (req, res) => {
+  res.status(200).json({
+    success: true,
+    clientUrlEnv: process.env.CLIENT_URL || 'not set',
+    nodeEnv: process.env.NODE_ENV,
+    serverTime: new Date().toISOString(),
+  });
+});
+
 export default router;
