@@ -364,7 +364,7 @@ export default function DashboardClient() {
           icon="ads_click"
           title="Total Clicks"
           value={data.totalClicks?.toLocaleString() || '0'}
-          badge="Lifetime"
+          badge={queryParams.days ? `Last ${queryParams.days} Days` : 'Custom Range'}
           iconBg="bg-primary-fixed-dim"
           iconColor="text-primary"
           badgeVariant="neutral"

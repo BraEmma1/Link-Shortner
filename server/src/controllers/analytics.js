@@ -105,10 +105,12 @@ export const getOverallAnalytics = async (req, res) => {
       tempDate.setDate(tempDate.getDate() + 1);
     }
 
+    const totalClicksInRange = dailyClicks.reduce((sum, item) => sum + item.clicks, 0);
+
     res.status(200).json({
       success: true,
       data: {
-        totalClicks,
+        totalClicks: totalClicksInRange,
         topLinks,
         dailyClicks: formattedDailyClicks,
         totalLinksCount: links.length,
