@@ -1,6 +1,7 @@
 import type { Metadata } from 'next';
 import './globals.css';
 import { AuthProvider } from '@/context/AuthContext';
+import KeepAliveProvider from '@/components/KeepAliveProvider';
 
 export const metadata: Metadata = {
   title: {
@@ -33,6 +34,8 @@ export default function RootLayout({
         />
       </head>
       <body className="bg-background text-on-surface font-body-md antialiased">
+        {/* Warms up the Express backend immediately and keeps it alive every 14 min */}
+        <KeepAliveProvider />
         <AuthProvider>{children}</AuthProvider>
       </body>
     </html>
