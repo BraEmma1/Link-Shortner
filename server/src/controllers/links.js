@@ -3,6 +3,14 @@ import Link from '../models/Link.js';
 import QRCode from '../models/QRCode.js';
 
 /**
+ * Returns the base URL used for short links, stripped of trailing slashes.
+ * In production this should be your custom domain (e.g. https://thevaultzmedia.com).
+ * Set BASE_URL in Render environment variables.
+ */
+const getBaseUrl = () =>
+  (process.env.BASE_URL || 'https://thevaultzmedia.com').replace(/\/+$/, '');
+
+/**
  * @desc    Create a shortened link
  * @route   POST /api/v1/links
  * @access  Private
@@ -56,8 +64,7 @@ export const createLink = async (req, res) => {
     }
 
     // Determine base URL (default or from env)
-    const baseUrl = process.env.BASE_URL || 'https://thevaultzmedia.com';
-    const shortUrl = `${baseUrl}/${slug}`;
+    const shortUrl = `${getBaseUrl()}/${slug}`;
 
     // Create the Link record
     const link = await Link.create({
@@ -138,7 +145,7 @@ export const getLinks = async (req, res) => {
       .limit(limit)
       .lean();
 
-    const baseUrl = process.env.BASE_URL || 'https://thevaultzmedia.com';
+    const baseUrl = getBaseUrl();
 
     // Map links to include shortUrl
     const formattedLinks = links.map(link => ({
@@ -198,7 +205,7 @@ export const updateLink = async (req, res) => {
 
     await link.save();
 
-    const baseUrl = process.env.BASE_URL || 'https://thevaultzmedia.com';
+    const baseUrl = getBaseUrl();
 
     return res.status(200).json({
       success: true,
