@@ -61,18 +61,37 @@ app.set('trust proxy', 1);
 app.use(helmet());
 
 // CORS — secure allowed origins mapping
-const allowedOrigins = process.env.CLIENT_URL
+// CLIENT_URL supports: exact URLs, comma-separated list, wildcard *, or glob patterns like *.vercel.app
+const rawOrigins = process.env.CLIENT_URL
   ? process.env.CLIENT_URL.split(',').map((o) => o.trim())
   : ['http://localhost:3000'];
+
+// Convert entries like *.vercel.app into RegExp for pattern matching
+const allowedOrigins = rawOrigins.map((o) => {
+  if (o.includes('*')) {
+    const escaped = o.replace(/[.+?^${}()|[\]\\]/g, '\\$&').replace(/\*/g, '.*');
+    return new RegExp(`^${escaped}$`);
+  }
+  return o;
+});
+
+const isOriginAllowed = (origin) => {
+  return allowedOrigins.some((allowed) => {
+    if (allowed === '*') return true;
+    if (allowed instanceof RegExp) return allowed.test(origin);
+    return allowed === origin;
+  });
+};
 
 app.use(
   cors({
     origin: (origin, callback) => {
-      // Allow requests with no origin (like server-to-server or scripts)
+      // Allow requests with no origin (server-to-server, curl, etc.)
       if (!origin) return callback(null, true);
-      if (allowedOrigins.indexOf(origin) !== -1 || allowedOrigins.includes('*')) {
+      if (isOriginAllowed(origin)) {
         return callback(null, true);
       }
+      logger.warn(`CORS blocked origin: ${origin}`);
       return callback(new Error('Not allowed by CORS'));
     },
     credentials: true, // Allow cookies / Authorization headers
