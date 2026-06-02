@@ -6,7 +6,7 @@ const PROTECTED_ROUTES = [
   '/dashboard',
   '/links',
   '/analytics',
-  '/qr-codes',
+  '/qrcodes',
   '/settings',
 ];
 

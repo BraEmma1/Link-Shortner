@@ -16,10 +16,31 @@ export default function DashboardClient() {
   const [error, setError] = useState('');
   const [data, setData] = useState<any>(null);
 
+  const [filterType, setFilterType] = useState('30');
+  const [selectedStart, setSelectedStart] = useState<Date | null>(null);
+  const [selectedEnd, setSelectedEnd] = useState<Date | null>(null);
+  const [currentMonth, setCurrentMonth] = useState(new Date());
+  const [hoveredDate, setHoveredDate] = useState<Date | null>(null);
+  const [isCalendarOpen, setIsCalendarOpen] = useState(false);
+  const [queryParams, setQueryParams] = useState<Record<string, string>>({ days: '30' });
+
+  // Initialize custom dates defaults
+  useEffect(() => {
+    const end = new Date();
+    const start = new Date();
+    start.setDate(end.getDate() - 30);
+    start.setHours(0, 0, 0, 0);
+    end.setHours(0, 0, 0, 0);
+    setSelectedStart(start);
+    setSelectedEnd(end);
+  }, []);
+
   useEffect(() => {
     const fetchDashboardData = async () => {
+      setIsLoading(true);
+      setError('');
       try {
-        const response = await api.get('/analytics/overall');
+        const response = await api.get('/analytics/overall', { params: queryParams });
         if (response.data.success) {
           setData(response.data.data);
         } else {
@@ -32,7 +53,122 @@ export default function DashboardClient() {
       }
     };
     fetchDashboardData();
-  }, []);
+  }, [queryParams]);
+
+  const handlePresetSelect = (daysStr: string) => {
+    setFilterType(daysStr);
+    setQueryParams({ days: daysStr });
+    setIsCalendarOpen(false);
+  };
+
+  const handleApplyCustomRange = () => {
+    if (!selectedStart || !selectedEnd) {
+      alert('Please select both start and end dates');
+      return;
+    }
+    setQueryParams({
+      startDate: selectedStart.toISOString().split('T')[0],
+      endDate: selectedEnd.toISOString().split('T')[0]
+    });
+    setIsCalendarOpen(false);
+  };
+
+  const getDaysInMonth = (date: Date) => {
+    const year = date.getFullYear();
+    const month = date.getMonth();
+    const firstDayIndex = new Date(year, month, 1).getDay();
+    const totalDays = new Date(year, month + 1, 0).getDate();
+    
+    const prevMonthTotalDays = new Date(year, month, 0).getDate();
+    const prevMonthDays = [];
+    for (let i = firstDayIndex - 1; i >= 0; i--) {
+      prevMonthDays.push({
+        date: new Date(year, month - 1, prevMonthTotalDays - i),
+        isCurrentMonth: false,
+      });
+    }
+
+    const currentMonthDays = [];
+    for (let i = 1; i <= totalDays; i++) {
+      currentMonthDays.push({
+        date: new Date(year, month, i),
+        isCurrentMonth: true,
+      });
+    }
+
+    const nextMonthDays = [];
+    const remainingCells = 42 - (prevMonthDays.length + currentMonthDays.length);
+    for (let i = 1; i <= remainingCells; i++) {
+      nextMonthDays.push({
+        date: new Date(year, month + 1, i),
+        isCurrentMonth: false,
+      });
+    }
+
+    return [...prevMonthDays, ...currentMonthDays, ...nextMonthDays];
+  };
+
+  const handleDateClick = (date: Date) => {
+    if (!selectedStart || (selectedStart && selectedEnd)) {
+      setSelectedStart(date);
+      setSelectedEnd(null);
+    } else if (selectedStart && !selectedEnd) {
+      if (date < selectedStart) {
+        setSelectedStart(date);
+      } else {
+        setSelectedEnd(date);
+      }
+    }
+  };
+
+  const isSameDay = (d1: Date | null, d2: Date | null) => {
+    if (!d1 || !d2) return false;
+    return d1.getFullYear() === d2.getFullYear() &&
+           d1.getMonth() === d2.getMonth() &&
+           d1.getDate() === d2.getDate();
+  };
+
+  const isBetweenDays = (date: Date, start: Date | null, end: Date | null) => {
+    if (!start || !end) return false;
+    const d = new Date(date).setHours(0, 0, 0, 0);
+    const s = new Date(start).setHours(0, 0, 0, 0);
+    const e = new Date(end).setHours(0, 0, 0, 0);
+    return d > s && d < e;
+  };
+
+  const isBetweenPreview = (date: Date, start: Date | null, hovered: Date | null) => {
+    if (!start || hovered === null || selectedEnd !== null) return false;
+    const d = new Date(date).setHours(0, 0, 0, 0);
+    const s = new Date(start).setHours(0, 0, 0, 0);
+    const h = new Date(hovered).setHours(0, 0, 0, 0);
+    if (h < s) return false;
+    return d > s && d < h;
+  };
+
+  const handlePrevMonth = () => {
+    setCurrentMonth(new Date(currentMonth.getFullYear(), currentMonth.getMonth() - 1, 1));
+  };
+
+  const handleNextMonth = () => {
+    setCurrentMonth(new Date(currentMonth.getFullYear(), currentMonth.getMonth() + 1, 1));
+  };
+
+  const getTriggerLabel = () => {
+    if (filterType !== 'custom') {
+      return `Last ${filterType} Days`;
+    }
+    if (selectedStart && selectedEnd) {
+      return `${formatDateLabel(selectedStart)} - ${formatDateLabel(selectedEnd)}`;
+    }
+    if (selectedStart) {
+      return `${formatDateLabel(selectedStart)} - Select end`;
+    }
+    return 'Custom Range';
+  };
+
+  const formatDateLabel = (d: Date) => {
+    return d.toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' });
+  };
 
   if (isLoading) {
     return (
@@ -69,10 +205,147 @@ export default function DashboardClient() {
             Track your link performance and audience engagement.
           </p>
         </div>
-        <div className="flex gap-2">
-          <select className="bg-surface-container-lowest border border-border-light rounded-lg px-4 py-2 font-body-sm text-body-sm focus:ring-2 focus:ring-secondary outline-none">
-            <option>Last 30 Days</option>
-          </select>
+        <div className="relative">
+          <button
+            onClick={() => setIsCalendarOpen(v => !v)}
+            className="flex items-center gap-2 bg-surface-container-lowest border border-border-light rounded-lg px-4 py-2 font-body-sm text-body-sm hover:bg-background-subtle focus:ring-2 focus:ring-secondary transition-all outline-none text-on-surface cursor-pointer shadow-sm select-none"
+          >
+            <span className="material-symbols-outlined text-[18px] text-secondary">calendar_today</span>
+            <span>{getTriggerLabel()}</span>
+            <span className="material-symbols-outlined text-[16px] text-secondary">expand_more</span>
+          </button>
+
+          {isCalendarOpen && (
+            <>
+              {/* Overlay backdrop to close picker on click outside */}
+              <div
+                className="fixed inset-0 z-40 bg-transparent"
+                onClick={() => setIsCalendarOpen(false)}
+              />
+              <div className="absolute left-0 sm:left-auto sm:right-0 mt-2 bg-surface-container-lowest border border-border-light rounded-xl shadow-lg z-50 flex flex-col sm:flex-row divide-y sm:divide-y-0 sm:divide-x divide-border-light overflow-hidden animate-fadeIn">
+                {/* Presets Panel (Left side) */}
+                <div className="p-3 flex flex-col gap-1 w-full sm:w-40 bg-background-subtle/50">
+                  <span className="text-[10px] font-bold text-secondary uppercase tracking-wider px-2 py-1 mb-1 select-none">Presets</span>
+                  {[
+                    { label: 'Last 7 Days', value: '7' },
+                    { label: 'Last 21 Days', value: '21' },
+                    { label: 'Last 30 Days', value: '30' },
+                    { label: 'Custom Range', value: 'custom' },
+                  ].map(preset => {
+                    const isActive = filterType === preset.value;
+                    return (
+                      <button
+                        key={preset.value}
+                        type="button"
+                        onClick={() => {
+                          if (preset.value === 'custom') {
+                            setFilterType('custom');
+                          } else {
+                            handlePresetSelect(preset.value);
+                          }
+                        }}
+                        className={`text-left px-3 py-2 text-xs font-semibold rounded-lg transition-all ${
+                          isActive 
+                            ? 'bg-primary/10 text-primary' 
+                            : 'text-on-surface hover:bg-background-subtle'
+                        }`}
+                      >
+                        {preset.label}
+                      </button>
+                    );
+                  })}
+                </div>
+
+                {/* Calendar Panel (Right side) - only shown for custom selection */}
+                {filterType === 'custom' && (
+                  <div className="p-4 w-72 select-none">
+                    {/* Month navigation */}
+                    <div className="flex items-center justify-between mb-4">
+                      <button 
+                        onClick={handlePrevMonth}
+                        type="button" 
+                        className="p-1 hover:bg-background-subtle rounded-full text-secondary hover:text-on-surface transition-colors"
+                      >
+                        <span className="material-symbols-outlined text-[18px] font-bold">chevron_left</span>
+                      </button>
+                      <span className="font-semibold text-xs text-on-surface">
+                        {currentMonth.toLocaleDateString('en-US', { month: 'long', year: 'numeric' })}
+                      </span>
+                      <button 
+                        onClick={handleNextMonth}
+                        type="button" 
+                        className="p-1 hover:bg-background-subtle rounded-full text-secondary hover:text-on-surface transition-colors"
+                      >
+                        <span className="material-symbols-outlined text-[18px] font-bold">chevron_right</span>
+                      </button>
+                    </div>
+
+                    {/* Weekdays */}
+                    <div className="grid grid-cols-7 gap-1 text-center mb-1">
+                      {['Su', 'Mo', 'Tu', 'We', 'Th', 'Fr', 'Sa'].map(d => (
+                        <span key={d} className="text-[10px] font-bold text-secondary uppercase tracking-wider py-1">
+                          {d}
+                        </span>
+                      ))}
+                    </div>
+
+                    {/* Days Grid */}
+                    <div className="grid grid-cols-7 gap-1">
+                      {getDaysInMonth(currentMonth).map(({ date, isCurrentMonth }, idx) => {
+                        const isSelectedStart = isSameDay(date, selectedStart);
+                        const isSelectedEnd = isSameDay(date, selectedEnd);
+                        const inRange = isBetweenDays(date, selectedStart, selectedEnd);
+                        const inPreview = isBetweenPreview(date, selectedStart, hoveredDate);
+
+                        let btnClass = "w-8 h-8 flex items-center justify-center text-xs font-semibold rounded-lg transition-all focus:outline-none ";
+                        
+                        if (isSelectedStart || isSelectedEnd) {
+                          btnClass += "bg-primary text-white shadow-sm font-bold scale-95";
+                        } else if (inRange || inPreview) {
+                          btnClass += "bg-primary/10 text-primary rounded-none hover:bg-primary/20";
+                        } else {
+                          btnClass += isCurrentMonth 
+                            ? "text-on-surface hover:bg-background-subtle" 
+                            : "text-secondary/40 hover:bg-background-subtle";
+                        }
+
+                        return (
+                          <button
+                            key={idx}
+                            type="button"
+                            onClick={() => handleDateClick(date)}
+                            onMouseEnter={() => setHoveredDate(date)}
+                            onMouseLeave={() => setHoveredDate(null)}
+                            className={btnClass}
+                          >
+                            {date.getDate()}
+                          </button>
+                        );
+                      })}
+                    </div>
+
+                    {/* Actions */}
+                    <div className="flex justify-end gap-2 mt-4 pt-3 border-t border-border-light">
+                      <button
+                        type="button"
+                        onClick={() => setIsCalendarOpen(false)}
+                        className="px-3 py-1.5 bg-surface-container border border-border-light rounded-lg text-[11px] font-bold text-on-surface hover:bg-surface-variant transition-all"
+                      >
+                        Cancel
+                      </button>
+                      <button
+                        type="button"
+                        onClick={handleApplyCustomRange}
+                        className="px-3 py-1.5 bg-primary text-white rounded-lg text-[11px] font-bold hover:bg-surface-tint transition-all shadow-sm"
+                      >
+                        Apply
+                      </button>
+                    </div>
+                  </div>
+                )}
+              </div>
+            </>
+          )}
         </div>
       </div>
 
@@ -122,7 +395,7 @@ export default function DashboardClient() {
         <div className="lg:col-span-2 bg-surface-container-lowest rounded-lg border border-border-light shadow-sm p-gutter flex flex-col min-h-[320px]">
           <div className="flex justify-between items-center mb-6">
             <h3 className="font-headline-md text-headline-md text-on-background">
-              Click Trends (30 Days)
+              Click Trends ({queryParams.days ? `Last ${queryParams.days} Days` : 'Custom Range'})
             </h3>
             <Link href="/analytics" className="text-secondary hover:text-primary transition-colors text-sm font-medium flex items-center gap-1">
               Full Analytics <span className="material-symbols-outlined text-[16px]">arrow_forward</span>

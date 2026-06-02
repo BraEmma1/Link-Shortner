@@ -11,6 +11,7 @@ import mongoose from 'mongoose';
 export const getOverallAnalytics = async (req, res) => {
   try {
     const userId = req.user._id;
+    const { days, startDate, endDate } = req.query;
 
     // 1. Get all links owned by the user
     const links = await Link.find({ userId }).select('_id title slug shortUrl clicks status').lean();
@@ -25,19 +26,42 @@ export const getOverallAnalytics = async (req, res) => {
     // Top Links
     const topLinks = [...links].sort((a, b) => b.clicks - a.clicks).slice(0, 5);
 
-    // Daily Clicks for the last 30 days
-    const thirtyDaysAgo = new Date();
-    thirtyDaysAgo.setDate(thirtyDaysAgo.getDate() - 30);
+    // Calculate the date range
+    let matchStartDate;
+    let matchEndDate = new Date();
+    let numDays = 30;
+
+    if (startDate && endDate) {
+      matchStartDate = new Date(startDate);
+      matchStartDate.setHours(0, 0, 0, 0);
+      matchEndDate = new Date(endDate);
+      matchEndDate.setHours(23, 59, 59, 999);
+      
+      const diffTime = Math.abs(matchEndDate - matchStartDate);
+      numDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
+      if (numDays > 365) numDays = 365;
+    } else {
+      numDays = parseInt(days, 10) || 30;
+      if (numDays <= 0) numDays = 30;
+      matchStartDate = new Date();
+      matchStartDate.setDate(matchStartDate.getDate() - numDays + 1);
+      matchStartDate.setHours(0, 0, 0, 0);
+    }
 
     // Calculate start of today for "Clicks Today" KPI
     const startOfToday = new Date();
     startOfToday.setHours(0, 0, 0, 0);
 
+    const dateMatchCriteria = {
+      linkId: { $in: linkIds },
+      clickedAt: { $gte: matchStartDate, $lte: matchEndDate }
+    };
+
     // Run parallel aggregations for performance
     const [dailyClicks, deviceBreakdown, trafficSources, clicksTodayData] = await Promise.all([
       // Daily clicks array
       Analytics.aggregate([
-        { $match: { linkId: { $in: linkIds }, clickedAt: { $gte: thirtyDaysAgo } } },
+        { $match: dateMatchCriteria },
         {
           $group: {
             _id: { $dateToString: { format: "%Y-%m-%d", date: "$clickedAt" } },
@@ -46,15 +70,15 @@ export const getOverallAnalytics = async (req, res) => {
         },
         { $sort: { _id: 1 } }
       ]),
-      // Overall device breakdown
+      // Overall device breakdown in date range
       Analytics.aggregate([
-        { $match: { linkId: { $in: linkIds } } },
+        { $match: dateMatchCriteria },
         { $group: { _id: "$device", count: { $sum: 1 } } },
         { $sort: { count: -1 } }
       ]),
-      // Overall traffic sources
+      // Overall traffic sources in date range
       Analytics.aggregate([
-        { $match: { linkId: { $in: linkIds } } },
+        { $match: dateMatchCriteria },
         { $group: { _id: "$referrer", count: { $sum: 1 } } },
         { $sort: { count: -1 } },
         { $limit: 10 }
@@ -68,17 +92,17 @@ export const getOverallAnalytics = async (req, res) => {
 
     const clicksToday = clicksTodayData.length > 0 ? clicksTodayData[0].clicksToday : 0;
 
-    // Format daily clicks to include all days (even empty ones)
+    // Format daily clicks to include all days in range (even empty ones)
     const formattedDailyClicks = [];
-    for (let i = 29; i >= 0; i--) {
-      const d = new Date();
-      d.setDate(d.getDate() - i);
-      const dateString = d.toISOString().split('T')[0];
+    const tempDate = new Date(matchStartDate);
+    for (let i = 0; i < numDays; i++) {
+      const dateString = tempDate.toISOString().split('T')[0];
       const match = dailyClicks.find(item => item._id === dateString);
       formattedDailyClicks.push({
         date: dateString,
         clicks: match ? match.clicks : 0
       });
+      tempDate.setDate(tempDate.getDate() + 1);
     }
 
     res.status(200).json({
@@ -90,8 +114,8 @@ export const getOverallAnalytics = async (req, res) => {
         totalLinksCount: links.length,
         activeLinksCount,
         clicksToday,
-        deviceBreakdown: deviceBreakdown.map(i => ({ device: i._id, count: i.count })),
-        trafficSources: trafficSources.map(i => ({ source: i._id, count: i.count }))
+        deviceBreakdown: deviceBreakdown.map(i => ({ device: i._id || 'Unknown', count: i.count })),
+        trafficSources: trafficSources.map(i => ({ source: i._id || 'Direct', count: i.count }))
       }
     });
 
