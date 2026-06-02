@@ -14,9 +14,11 @@ const getBaseURL = () => {
   return cleanedUrl;
 };
 
+// 30s timeout — accounts for cold starts on free-tier hosting (e.g. Render)
+// where the server may take up to ~30s to wake up after inactivity
 const api = axios.create({
   baseURL: getBaseURL(),
-  timeout: 15000,
+  timeout: 30000,
   headers: {
     'Content-Type': 'application/json',
   },
@@ -65,6 +67,18 @@ api.interceptors.response.use(
         window.location.href = '/login';
       }
     }
+
+    // ── Retry once on timeout or network errors (handles cold starts) ──
+    const config = error.config as InternalAxiosRequestConfig & { _retryCount?: number };
+    const isTimeout = error.code === 'ECONNABORTED' || error.message?.includes('timeout');
+    const isNetworkError = !error.response && error.code !== 'ERR_CANCELED';
+
+    if ((isTimeout || isNetworkError) && config && !config._retryCount) {
+      config._retryCount = 1;
+      console.warn('[api] Request timed out or failed — retrying once...');
+      return api(config);
+    }
+
     return Promise.reject(error);
   }
 );
