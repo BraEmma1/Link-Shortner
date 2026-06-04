@@ -228,7 +228,7 @@ export default function LinksClient() {
                     </td>
                     <td className="py-4 px-gutter text-right">
                       <div className="flex items-center justify-end gap-2">
-                        <Link href={`/analytics?linkId=${link._id}`} className="text-secondary hover:text-primary p-1 rounded hover:bg-surface-variant transition-colors" title="Analytics">
+                        <Link href={`/dashboard/analytics?linkId=${link._id}`} className="text-secondary hover:text-primary p-1 rounded hover:bg-surface-variant transition-colors" title="Analytics">
                           <span className="material-symbols-outlined text-[18px]">bar_chart</span>
                         </Link>
                         <button onClick={() => openEditModal(link)} className="text-secondary hover:text-primary p-1 rounded hover:bg-surface-variant transition-colors" title="Edit">
@@ -303,7 +303,7 @@ export default function LinksClient() {
                   </div>
 
                   <div className="flex items-center gap-2">
-                    <Link href={`/analytics?linkId=${link._id}`} className="text-secondary hover:text-primary p-2 bg-surface-container-low hover:bg-surface-variant rounded transition-colors" title="Analytics">
+                    <Link href={`/dashboard/analytics?linkId=${link._id}`} className="text-secondary hover:text-primary p-2 bg-surface-container-low hover:bg-surface-variant rounded transition-colors" title="Analytics">
                       <span className="material-symbols-outlined text-[16px]">bar_chart</span>
                     </Link>
                     <button onClick={() => openEditModal(link)} className="text-secondary hover:text-primary p-2 bg-surface-container-low hover:bg-surface-variant rounded transition-colors" title="Edit">

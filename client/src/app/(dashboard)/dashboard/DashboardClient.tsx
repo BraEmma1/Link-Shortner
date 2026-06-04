@@ -397,7 +397,7 @@ export default function DashboardClient() {
             <h3 className="font-headline-md text-headline-md text-on-background">
               Click Trends ({queryParams.days ? `Last ${queryParams.days} Days` : 'Custom Range'})
             </h3>
-            <Link href="/analytics" className="text-secondary hover:text-primary transition-colors text-sm font-medium flex items-center gap-1">
+            <Link href="/dashboard/analytics" className="text-secondary hover:text-primary transition-colors text-sm font-medium flex items-center gap-1">
               Full Analytics <span className="material-symbols-outlined text-[16px]">arrow_forward</span>
             </Link>
           </div>
@@ -483,7 +483,7 @@ export default function DashboardClient() {
             Top Performing Links
           </h3>
           <Link
-            href="/links"
+            href="/dashboard/links"
             className="text-primary font-label-md text-label-md hover:underline font-bold"
           >
             View All
@@ -530,7 +530,7 @@ export default function DashboardClient() {
                     </span>
                   </td>
                   <td className="py-4 px-gutter text-right">
-                    <Link href={`/analytics?linkId=${link._id}`} className="text-secondary hover:text-primary transition-colors">
+                    <Link href={`/dashboard/analytics?linkId=${link._id}`} className="text-secondary hover:text-primary transition-colors">
                       <span className="material-symbols-outlined text-[20px]">bar_chart</span>
                     </Link>
                   </td>
@@ -578,7 +578,7 @@ export default function DashboardClient() {
                   <span className="font-label-sm text-label-sm text-secondary">clicks</span>
                   <div className="flex items-center gap-1.5 mt-1">
                     <span className={`w-1.5 h-1.5 rounded-full ${link.status === 'active' ? 'bg-[#1FB07E]' : 'bg-secondary'}`}></span>
-                    <Link href={`/analytics?linkId=${link._id}`} className="text-primary text-xs hover:underline flex items-center">
+                    <Link href={`/dashboard/analytics?linkId=${link._id}`} className="text-primary text-xs hover:underline flex items-center">
                       <span className="material-symbols-outlined text-base">bar_chart</span>
                     </Link>
                   </div>

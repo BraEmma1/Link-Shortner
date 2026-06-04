@@ -1,6 +1,7 @@
 import crypto from 'crypto';
 import Link from '../models/Link.js';
 import QRCode from '../models/QRCode.js';
+import Analytics from '../models/Analytics.js';
 
 /**
  * Returns the base URL used for short links, stripped of trailing slashes.
@@ -68,7 +69,7 @@ export const createLink = async (req, res) => {
 
     // Create the Link record
     const link = await Link.create({
-      userId: req.user._id,
+      userId: req.user?._id,
       title: title || '',
       slug,
       targetUrl,
@@ -77,7 +78,7 @@ export const createLink = async (req, res) => {
     // Automatically generate QRCode metadata for the new link
     await QRCode.create({
       linkId: link._id,
-      userId: req.user._id,
+      userId: req.user?._id,
     });
 
     return res.status(201).json({

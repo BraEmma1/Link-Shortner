@@ -94,7 +94,7 @@ export default function QRCodesClient() {
       ) : (
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-gutter">
           {/* Create New Card Trigger */}
-          <Link href="/links" className="border-2 border-dashed border-border-light rounded-xl p-6 flex flex-col items-center justify-center hover:bg-surface-container-low hover:border-secondary transition-colors duration-300 min-h-[340px] group bg-surface-container-lowest">
+          <Link href="/dashboard/links" className="border-2 border-dashed border-border-light rounded-xl p-6 flex flex-col items-center justify-center hover:bg-surface-container-low hover:border-secondary transition-colors duration-300 min-h-[340px] group bg-surface-container-lowest">
             <div className="w-16 h-16 rounded-full bg-surface-container flex items-center justify-center mb-4 shadow-sm group-hover:scale-110 transition-transform">
               <span className="material-symbols-outlined text-secondary text-2xl">add</span>
             </div>

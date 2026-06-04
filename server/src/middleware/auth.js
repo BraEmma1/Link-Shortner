@@ -71,3 +71,45 @@ export const protect = async (req, res, next) => {
     });
   }
 };
+
+/**
+ * Optional verification of WordPress JWT tokens.
+ * If token is present and valid, attaches user record to req.user.
+ * Otherwise, lets request continue as anonymous (no req.user).
+ */
+export const optionalProtect = async (req, res, next) => {
+  let token;
+
+  if (
+    req.headers.authorization &&
+    req.headers.authorization.startsWith('Bearer ')
+  ) {
+    token = req.headers.authorization.split(' ')[1];
+  }
+
+  if (!token) {
+    return next();
+  }
+
+  try {
+    if (!process.env.WP_JWT_SECRET) {
+      return next();
+    }
+    const decoded = jwt.verify(token, process.env.WP_JWT_SECRET);
+    const wpUserIdStr = decoded.data?.user?.id || decoded.sub;
+    if (!wpUserIdStr) {
+      return next();
+    }
+
+    const wpUserId = parseInt(wpUserIdStr, 10);
+    const user = await User.findOne({ wpUserId });
+
+    if (user) {
+      req.user = user;
+    }
+    next();
+  } catch (error) {
+    // Continue anonymously even if verification fails
+    next();
+  }
+};

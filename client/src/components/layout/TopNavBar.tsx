@@ -9,7 +9,7 @@ interface TopNavBarProps {
 }
 
 export default function TopNavBar({ onCreateLink }: TopNavBarProps) {
-  const { user, logout } = useAuth();
+  const { user, logout, isAuthenticated } = useAuth();
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
 
   // Build initials from display name (e.g. "John Doe" → "JD")
@@ -64,15 +64,17 @@ export default function TopNavBar({ onCreateLink }: TopNavBarProps) {
         <div className="hidden md:block h-6 w-px bg-border-light mx-2" />
 
         {/* Create Link CTA */}
-        <button
-          suppressHydrationWarning
-          id="create-link-btn"
-          onClick={onCreateLink}
-          className="hidden md:flex items-center justify-center bg-primary text-white px-4 py-2 rounded-lg font-label-md text-label-md hover:bg-surface-tint transition-colors gap-2 min-h-[40px]"
-        >
-          <span className="material-symbols-outlined text-[18px]">add</span>
-          Create Link
-        </button>
+        {isAuthenticated && (
+          <button
+            suppressHydrationWarning
+            id="create-link-btn"
+            onClick={onCreateLink}
+            className="hidden md:flex items-center justify-center bg-primary text-white px-4 py-2 rounded-lg font-label-md text-label-md hover:bg-surface-tint transition-colors gap-2 min-h-[40px]"
+          >
+            <span className="material-symbols-outlined text-[18px]">add</span>
+            Create Link
+          </button>
+        )}
 
         {/* User Avatar & Dropdown */}
         <div className="relative">
@@ -81,7 +83,7 @@ export default function TopNavBar({ onCreateLink }: TopNavBarProps) {
             className="w-8 h-8 rounded-full bg-secondary-container text-on-secondary-container flex items-center justify-center font-label-md text-label-md ml-2 border border-border-light select-none cursor-pointer shrink-0 hover:ring-2 hover:ring-primary/20 transition-all outline-none"
             aria-label="User menu"
           >
-            {initials}
+            {isAuthenticated ? initials : 'VL'}
           </button>
 
           {isDropdownOpen && (
@@ -92,22 +94,35 @@ export default function TopNavBar({ onCreateLink }: TopNavBarProps) {
                 onClick={() => setIsDropdownOpen(false)}
               />
               <div className="absolute right-0 mt-2 w-48 bg-surface-container-lowest border border-border-light rounded-xl shadow-lg py-1 z-50 animate-fadeIn">
-                {user && (
-                  <div className="px-4 py-2.5 border-b border-border-light">
-                    <p className="font-semibold text-[13px] text-on-surface truncate">{user.name}</p>
-                    <p className="text-[11px] text-secondary truncate mt-0.5">{user.email}</p>
-                  </div>
+                {isAuthenticated && user ? (
+                  <>
+                    <div className="px-4 py-2.5 border-b border-border-light">
+                      <p className="font-semibold text-[13px] text-on-surface truncate">{user.name}</p>
+                      <p className="text-[11px] text-secondary truncate mt-0.5">{user.email}</p>
+                    </div>
+                    <button
+                      onClick={() => {
+                        setIsDropdownOpen(false);
+                        logout();
+                      }}
+                      className="w-full text-left px-4 py-2.5 text-[13px] font-medium text-primary hover:bg-background-subtle flex items-center gap-2 transition-colors outline-none"
+                    >
+                      <span className="material-symbols-outlined text-[18px]">logout</span>
+                      Logout
+                    </button>
+                  </>
+                ) : (
+                  <button
+                    onClick={() => {
+                      setIsDropdownOpen(false);
+                      window.location.href = '/login';
+                    }}
+                    className="w-full text-left px-4 py-2.5 text-[13px] font-medium text-primary hover:bg-background-subtle flex items-center gap-2 transition-colors outline-none"
+                  >
+                    <span className="material-symbols-outlined text-[18px]">login</span>
+                    Login
+                  </button>
                 )}
-                <button
-                  onClick={() => {
-                    setIsDropdownOpen(false);
-                    logout();
-                  }}
-                  className="w-full text-left px-4 py-2.5 text-[13px] font-medium text-primary hover:bg-background-subtle flex items-center gap-2 transition-colors outline-none"
-                >
-                  <span className="material-symbols-outlined text-[18px]">logout</span>
-                  Logout
-                </button>
               </div>
             </>
           )}

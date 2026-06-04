@@ -1,7 +1,7 @@
 'use client';
 
 import Link from 'next/link';
-import { usePathname } from 'next/navigation';
+import { usePathname, useRouter } from 'next/navigation';
 import { useAuth } from '@/context/AuthContext';
 
 interface NavItem {
@@ -12,15 +12,16 @@ interface NavItem {
 
 const NAV_ITEMS: NavItem[] = [
   { label: 'Dashboard', href: '/dashboard', icon: 'dashboard' },
-  { label: 'Links', href: '/links', icon: 'link' },
-  { label: 'Analytics', href: '/analytics', icon: 'analytics' },
-  { label: 'QR Codes', href: '/qrcodes', icon: 'qr_code' },
-  { label: 'Settings', href: '/settings', icon: 'settings' },
+  { label: 'Links', href: '/dashboard/links', icon: 'link' },
+  { label: 'Analytics', href: '/dashboard/analytics', icon: 'analytics' },
+  { label: 'QR Codes', href: '/dashboard/qr', icon: 'qr_code' },
+  { label: 'Settings', href: '/dashboard/settings', icon: 'settings' },
 ];
 
 export default function SideNavBar() {
   const pathname = usePathname();
-  const { logout } = useAuth();
+  const router = useRouter();
+  const { logout, isAuthenticated } = useAuth();
 
   return (
     <nav className="hidden md:flex flex-col h-full p-gutter fixed left-0 top-0 w-64 z-50 bg-sidebar-dark shadow-md">
@@ -43,7 +44,7 @@ export default function SideNavBar() {
       <div className="flex-1 flex flex-col gap-1">
         {NAV_ITEMS.map((item) => {
           const isActive =
-            pathname === item.href || pathname.startsWith(`${item.href}/`);
+            pathname === item.href || (item.href !== '/' && pathname.startsWith(`${item.href}/`));
 
           return (
             <Link
@@ -68,22 +69,34 @@ export default function SideNavBar() {
 
       {/* ── Footer CTA ────────────────────────────────── */}
       <div className="mt-auto pt-4 flex flex-col gap-2">
-        <button suppressHydrationWarning className="w-full py-2 px-4 rounded-lg border border-secondary-fixed-dim text-surface-container-lowest hover:bg-[#334670] transition-colors font-label-md text-label-md flex items-center justify-center gap-2">
-          <span className="material-symbols-outlined text-[18px]">
-            workspace_premium
-          </span>
-          Upgrade Plan
-        </button>
+        {isAuthenticated && (
+          <button suppressHydrationWarning className="w-full py-2 px-4 rounded-lg border border-secondary-fixed-dim text-surface-container-lowest hover:bg-[#334670] transition-colors font-label-md text-label-md flex items-center justify-center gap-2">
+            <span className="material-symbols-outlined text-[18px]">
+              workspace_premium
+            </span>
+            Upgrade Plan
+          </button>
+        )}
 
-        {/* Logout */}
-        <button
-          suppressHydrationWarning
-          onClick={logout}
-          className="w-full py-2 px-4 rounded-lg text-secondary-fixed-dim hover:text-surface-container-lowest hover:bg-[#334670] transition-colors font-label-md text-label-md flex items-center justify-center gap-2"
-        >
-          <span className="material-symbols-outlined text-[18px]">logout</span>
-          Sign Out
-        </button>
+        {isAuthenticated ? (
+          <button
+            suppressHydrationWarning
+            onClick={logout}
+            className="w-full py-2 px-4 rounded-lg text-secondary-fixed-dim hover:text-surface-container-lowest hover:bg-[#334670] transition-colors font-label-md text-label-md flex items-center justify-center gap-2"
+          >
+            <span className="material-symbols-outlined text-[18px]">logout</span>
+            Sign Out
+          </button>
+        ) : (
+          <button
+            suppressHydrationWarning
+            onClick={() => router.push('/login')}
+            className="w-full py-2 px-4 rounded-lg bg-primary text-white hover:bg-surface-tint transition-colors font-label-md text-label-md flex items-center justify-center gap-2 shadow-sm"
+          >
+            <span className="material-symbols-outlined text-[18px]">login</span>
+            Sign In
+          </button>
+        )}
       </div>
     </nav>
   );

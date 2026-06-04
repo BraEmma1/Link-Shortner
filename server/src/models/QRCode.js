@@ -15,7 +15,7 @@ const qrCodeSchema = new mongoose.Schema(
     userId: {
       type: mongoose.Schema.Types.ObjectId,
       ref: 'User',
-      required: [true, 'User ID is required'],
+      required: false,
       index: true,
     },
     foregroundColor: {

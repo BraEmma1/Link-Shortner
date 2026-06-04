@@ -4,10 +4,6 @@ import type { NextRequest } from 'next/server';
 // Routes that require authentication
 const PROTECTED_ROUTES = [
   '/dashboard',
-  '/links',
-  '/analytics',
-  '/qrcodes',
-  '/settings',
 ];
 
 // Routes that authenticated users should not access
