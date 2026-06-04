@@ -8,10 +8,9 @@
 
 /* ─── Material Symbols Defaults ────────────────────── */
 /*
-  FOUC prevention: keep icon spans invisible until the webfont is ready.
-  The .fonts-loaded class is added to <html> by an inline script in layout.tsx
-  once document.fonts.ready resolves. This prevents ligature text from
-  flashing before the font arrives.
+  visibility:hidden / fonts-loaded toggling is handled by the inline <style>
+  and <script> in layout.tsx head, which fire synchronously before any
+  external asset loads — guaranteeing zero FOUC even on Ctrl+F5.
 */
 .material-symbols-outlined {
   font-family: 'Material Symbols Outlined';
@@ -28,19 +27,6 @@
   font-feature-settings: 'liga';
   -webkit-font-smoothing: antialiased;
   user-select: none;
-  /* Hide text content until font renders — prevents ligature flash */
-  color: transparent;
-  transition: color 0s;
-}
-
-/* Once fonts are loaded, reveal the icons */
-html.fonts-loaded .material-symbols-outlined {
-  color: inherit;
-}
-
-/* Fallback: if font loading takes >3 s, show anyway to avoid blank icons */
-html.fonts-timeout .material-symbols-outlined {
-  color: inherit;
 }
 
 .material-symbols-outlined.fill {
