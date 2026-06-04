@@ -26,18 +26,16 @@ export default function SideNavBar() {
   return (
     <nav className="hidden md:flex flex-col h-full p-gutter fixed left-0 top-0 w-64 z-50 bg-sidebar-dark shadow-md">
       {/* ── Logo / Brand ─────────────────────────────── */}
-      <div className="mb-8 px-2 flex items-center gap-3">
-        <div className="w-8 h-8 rounded bg-primary flex items-center justify-center text-white shrink-0">
-          <span className="material-symbols-outlined fill text-[20px]">link</span>
-        </div>
-        <div>
-          <h1 className="font-headline-lg text-[20px] font-bold text-surface-container-lowest leading-tight">
-            Vaultz Links
-          </h1>
-          <p className="font-label-sm text-label-sm text-secondary-fixed-dim uppercase tracking-wider">
-            Enterprise Tier
-          </p>
-        </div>
+      <div className="mb-8 px-2 flex flex-col gap-1">
+        {/* eslint-disable-next-line @next/next/no-img-element */}
+        <img
+          src="/assets/The_Vaultz_News_Logo.png"
+          alt="The Vaultz News Logo"
+          className="h-10 w-auto object-contain self-start"
+        />
+        <p className="font-label-sm text-[10px] text-secondary-fixed-dim uppercase tracking-wider mt-1 border-t border-slate-700/20 pt-1.5 w-full">
+          Enterprise Tier
+        </p>
       </div>
 
       {/* ── Navigation Links ──────────────────────────── */}

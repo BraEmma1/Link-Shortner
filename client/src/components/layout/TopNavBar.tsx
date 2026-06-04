@@ -39,12 +39,14 @@ export default function TopNavBar({ onCreateLink }: TopNavBarProps) {
           />
         </div>
 
-        {/* Mobile brand fallback with link icon */}
-        <div className="flex md:hidden items-center gap-2">
-          <span className="material-symbols-outlined text-primary text-[24px]">link</span>
-          <h1 className="font-headline-md text-headline-lg-mobile font-bold text-primary">
-            Vaultz Links
-          </h1>
+        {/* Mobile brand fallback with custom image logo */}
+        <div className="flex md:hidden items-center">
+          {/* eslint-disable-next-line @next/next/no-img-element */}
+          <img
+            src="/assets/The_Vaultz_News_Logo.png"
+            alt="The Vaultz News Logo"
+            className="h-8 w-auto object-contain shrink-0"
+          />
         </div>
       </div>
 

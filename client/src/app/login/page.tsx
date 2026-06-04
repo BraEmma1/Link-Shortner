@@ -558,21 +558,27 @@ export default function LoginPage() {
 
         {/* Mobile-only: brand floats on gradient above the bottom-sheet card */}
         <div className="mobile-brand">
-          <div className="mobile-brand-icon">
-            <span className="material-symbols-outlined fill-icon">link</span>
-          </div>
-          <span className="mobile-brand-name">Vaultz Links</span>
+          {/* eslint-disable-next-line @next/next/no-img-element */}
+          <img
+            src="/assets/The_Vaultz_News_Logo.png"
+            alt="The Vaultz News Logo"
+            className="brand-logo-img-mobile"
+            style={{ height: '56px', width: 'auto', objectFit: 'contain', marginBottom: '8px' }}
+          />
           <span className="mobile-brand-tagline">Branded links & analytics</span>
         </div>
 
         <main className="login-card">
 
           {/* Brand */}
-          <div className="brand">
-            <div className="brand-icon">
-              <span className="material-symbols-outlined fill-icon">link</span>
-            </div>
-            <span className="brand-name">Vaultz Links</span>
+          <div className="brand" style={{ marginBottom: '24px' }}>
+            {/* eslint-disable-next-line @next/next/no-img-element */}
+            <img
+              src="/assets/The_Vaultz_News_Logo.png"
+              alt="The Vaultz News Logo"
+              className="brand-logo-img"
+              style={{ height: '52px', width: 'auto', objectFit: 'contain' }}
+            />
           </div>
 
           {/* Heading */}

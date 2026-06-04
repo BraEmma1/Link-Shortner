@@ -11,6 +11,9 @@ export const metadata: Metadata = {
   description:
     'Enterprise-grade URL shortening, QR code generation, and link analytics platform.',
   keywords: ['URL shortener', 'link management', 'QR codes', 'analytics'],
+  icons: {
+    icon: '/assets/TheVaultzLogo_cubic_For_newsletter.jpg',
+  },
 };
 
 export default function RootLayout({

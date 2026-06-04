@@ -110,17 +110,15 @@ export default function NewsroomClient() {
         <div className="flex justify-between items-center w-full px-margin-mobile md:px-margin-desktop max-w-container-max mx-auto h-20">
           {/* Logo */}
           <div className="flex items-center gap-3 select-none">
-            <div className="w-9 h-9 bg-primary rounded-lg flex items-center justify-center text-white shadow-sm">
-              <span className="material-symbols-outlined fill text-[22px]">link</span>
-            </div>
-            <div>
-              <span className="text-headline-md font-extrabold text-primary tracking-tight block">
-                Vaultz Links
-              </span>
-              <span className="text-[10px] text-secondary font-semibold uppercase tracking-wider block -mt-1">
-                Newsroom Portal
-              </span>
-            </div>
+            {/* eslint-disable-next-line @next/next/no-img-element */}
+            <img
+              src="/assets/The_Vaultz_News_Logo.png"
+              alt="The Vaultz News Logo"
+              className="h-9 w-auto object-contain shrink-0"
+            />
+            <span className="hidden md:inline text-[10px] text-secondary font-bold uppercase tracking-wider border-l border-border-light pl-3 py-1">
+              Newsroom Portal
+            </span>
           </div>
 
           {/* Action Button */}
@@ -155,7 +153,7 @@ export default function NewsroomClient() {
               Instant Story Link Shortener
             </h1>
             <p className="font-body-lg text-body-md md:text-body-lg text-secondary max-w-lg mx-auto leading-relaxed">
-              Paste your long editorial draft, campaign, or social URL to generate a trackable shortcut in seconds.
+              Paste your long URL to generate a trackable shortcut in seconds.
             </p>
           </div>
 
@@ -194,8 +192,8 @@ export default function NewsroomClient() {
                 <label className="block font-label-md text-label-md text-on-background font-bold">
                   Custom Slug <span className="text-secondary-fixed-dim text-xs font-normal">(Optional)</span>
                 </label>
-                <div className="flex rounded-xl overflow-hidden border border-border-light bg-background-subtle focus-within:ring-2 focus-within:ring-primary focus-within:border-primary transition-all shadow-inner">
-                  <span className="flex items-center px-4 bg-surface-container-low border-r border-border-light text-secondary font-medium text-body-md select-none">
+                <div className="flex rounded-xl border border-border-light bg-background-subtle focus-within:ring-2 focus-within:ring-primary focus-within:border-primary transition-all shadow-inner">
+                  <span className="flex items-center px-4 bg-surface-container-low border-r border-border-light text-secondary font-medium text-body-md select-none rounded-l-[11px]">
                     {displayDomain}/
                   </span>
                   <input
@@ -203,7 +201,7 @@ export default function NewsroomClient() {
                     value={customSlug}
                     onChange={(e) => setCustomSlug(e.target.value)}
                     placeholder="e.g. galamsey-forests"
-                    className="w-full px-4 py-3.5 bg-transparent outline-none font-body-md text-body-md text-on-surface"
+                    className="w-full px-4 py-3.5 bg-transparent outline-none font-body-md text-body-md text-on-surface rounded-r-[11px]"
                   />
                 </div>
               </div>
@@ -311,7 +309,7 @@ export default function NewsroomClient() {
         <div className="max-w-container-max mx-auto px-margin-desktop flex flex-col md:flex-row justify-between items-center gap-4 text-xs font-semibold text-secondary">
           <div className="flex items-center gap-2 opacity-70">
             <span className="material-symbols-outlined text-sm">link</span>
-            <span>Vaultz Media Group</span>
+            <span>The Vaultz Corporation</span>
           </div>
           <div>© 2026 Vaultz Links. Internal Editorial Portal.</div>
         </div>
