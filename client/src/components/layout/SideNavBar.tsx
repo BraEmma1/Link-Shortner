@@ -37,12 +37,13 @@ export default function SideNavBar() {
           Enterprise Tier
         </p>
       </div>
-
       {/* ── Navigation Links ──────────────────────────── */}
       <div className="flex-1 flex flex-col gap-1">
         {NAV_ITEMS.map((item) => {
           const isActive =
-            pathname === item.href || (item.href !== '/' && pathname.startsWith(`${item.href}/`));
+            item.href === '/dashboard'
+              ? pathname === '/dashboard'
+              : pathname === item.href || pathname.startsWith(`${item.href}/`);
 
           return (
             <Link
@@ -67,14 +68,6 @@ export default function SideNavBar() {
 
       {/* ── Footer CTA ────────────────────────────────── */}
       <div className="mt-auto pt-4 flex flex-col gap-2">
-        {isAuthenticated && (
-          <button suppressHydrationWarning className="w-full py-2 px-4 rounded-lg border border-secondary-fixed-dim text-surface-container-lowest hover:bg-[#334670] transition-colors font-label-md text-label-md flex items-center justify-center gap-2">
-            <span className="material-symbols-outlined text-[18px]">
-              workspace_premium
-            </span>
-            Upgrade Plan
-          </button>
-        )}
 
         {isAuthenticated ? (
           <button

@@ -12,7 +12,7 @@ const NAV_ITEMS = [
   { label: 'Dashboard', href: '/dashboard', icon: 'dashboard' },
   { label: 'Links', href: '/dashboard/links', icon: 'link' },
   { label: 'Analytics', href: '/dashboard/analytics', icon: 'bar_chart' },
-  { label: 'QR Codes', href: '/dashboard/qr', icon: 'qr_code' },
+  { label: 'QR', href: '/dashboard/qr', icon: 'qr_code' },
   { label: 'Settings', href: '/dashboard/settings', icon: 'settings' },
 ];
 
@@ -108,7 +108,10 @@ export default function DashboardLayout({
         {/* Mobile Bottom Navigation Bar */}
         <nav className="fixed bottom-0 left-0 w-full z-40 flex justify-around items-center px-2 py-3 bg-surface border-t border-border-light shadow-lg rounded-t-xl md:hidden">
           {NAV_ITEMS.map((item) => {
-            const isActive = pathname === item.href || (item.href !== '/' && pathname.startsWith(`${item.href}/`));
+            const isActive =
+              item.href === '/dashboard'
+                ? pathname === '/dashboard'
+                : pathname === item.href || pathname.startsWith(`${item.href}/`);
             return (
               <Link
                 key={item.href}
