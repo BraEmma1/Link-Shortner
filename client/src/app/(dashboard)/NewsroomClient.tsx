@@ -57,8 +57,8 @@ export default function NewsroomClient() {
     } catch (err: any) {
       setError(
         err.response?.data?.error ||
-          err.message ||
-          'An error occurred while generating the short URL'
+        err.message ||
+        'An error occurred while generating the short URL'
       );
     } finally {
       setIsGenerating(false);
@@ -200,7 +200,7 @@ export default function NewsroomClient() {
                     type="text"
                     value={customSlug}
                     onChange={(e) => setCustomSlug(e.target.value)}
-                    placeholder="e.g. galamsey-forests"
+                    placeholder="e.g. galamsey"
                     className="w-full px-4 py-3.5 bg-transparent outline-none font-body-md text-body-md text-on-surface rounded-r-[11px]"
                   />
                 </div>
@@ -241,11 +241,10 @@ export default function NewsroomClient() {
                       </code>
                       <button
                         onClick={handleCopy}
-                        className={`flex-shrink-0 p-2 rounded-md transition-colors ${
-                          isCopied
+                        className={`flex-shrink-0 p-2 rounded-md transition-colors ${isCopied
                             ? 'text-[#10B981] bg-green-50'
                             : 'text-secondary hover:text-primary hover:bg-background-subtle'
-                        }`}
+                          }`}
                         title="Copy Link"
                       >
                         <span className="material-symbols-outlined text-[20px]">
