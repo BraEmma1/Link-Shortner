@@ -182,7 +182,7 @@ export default function NewsroomClient() {
                     value={targetUrl}
                     onChange={(e) => setTargetUrl(e.target.value)}
                     placeholder="https://thevaultzmedia.com/news/article-slug-name"
-                    className="w-full pl-12 pr-4 py-3.5 bg-background-subtle border border-border-light rounded-xl focus:ring-2 focus:ring-primary focus:border-primary outline-none transition-all font-body-md text-body-md text-on-surface shadow-inner"
+                    className="w-full pl-12 pr-4 py-3.5 bg-background-subtle border border-border-light rounded-xl outline-none transition-all font-body-md text-body-md text-on-surface shadow-inner"
                   />
                 </div>
               </div>
@@ -192,7 +192,7 @@ export default function NewsroomClient() {
                 <label className="block font-label-md text-label-md text-on-background font-bold">
                   Custom Slug <span className="text-secondary-fixed-dim text-xs font-normal">(Optional)</span>
                 </label>
-                <div className="flex rounded-xl border border-border-light bg-background-subtle focus-within:ring-2 focus-within:ring-primary focus-within:border-primary transition-all shadow-inner">
+                <div className="flex rounded-xl border border-border-light bg-background-subtle transition-all shadow-inner">
                   <span className="flex items-center px-4 bg-surface-container-low border-r border-border-light text-secondary font-medium text-body-md select-none rounded-l-[11px]">
                     {displayDomain}/
                   </span>
