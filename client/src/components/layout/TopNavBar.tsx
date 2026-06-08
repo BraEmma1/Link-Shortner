@@ -4,7 +4,6 @@ import { useState } from 'react';
 import { useAuth } from '@/context/AuthContext';
 
 interface TopNavBarProps {
-  /** Called when user clicks "Create Link" button */
   onCreateLink?: () => void;
 }
 
@@ -12,7 +11,6 @@ export default function TopNavBar({ onCreateLink }: TopNavBarProps) {
   const { user, logout, isAuthenticated } = useAuth();
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
 
-  // Build initials from display name (e.g. "John Doe" → "JD")
   const initials = user?.name
     ? user.name
         .split(' ')
@@ -24,9 +22,7 @@ export default function TopNavBar({ onCreateLink }: TopNavBarProps) {
 
   return (
     <header className="sticky top-0 w-full z-40 bg-surface-container-lowest border-b border-border-light shadow-sm flex justify-between items-center px-margin-mobile md:px-margin-desktop py-unit h-16">
-      {/* ── Left: Search / Mobile Brand ────────────────── */}
       <div className="flex items-center flex-1 max-w-md">
-        {/* Desktop search */}
         <div className="relative w-full hidden md:block">
           <span className="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-on-surface-variant text-[20px]">
             search
@@ -39,7 +35,6 @@ export default function TopNavBar({ onCreateLink }: TopNavBarProps) {
           />
         </div>
 
-        {/* Mobile brand fallback with custom image logo */}
         <div className="flex md:hidden items-center">
           {/* eslint-disable-next-line @next/next/no-img-element */}
           <img
@@ -50,22 +45,17 @@ export default function TopNavBar({ onCreateLink }: TopNavBarProps) {
         </div>
       </div>
 
-      {/* ── Right: Actions & Profile ───────────────────── */}
       <div className="flex items-center gap-4">
-        {/* Notifications */}
         <button suppressHydrationWarning className="hidden md:flex text-on-surface-variant hover:text-primary transition-colors items-center justify-center w-10 h-10 rounded-full hover:bg-background-subtle">
           <span className="material-symbols-outlined">notifications</span>
         </button>
 
-        {/* Help */}
         <button suppressHydrationWarning className="hidden md:flex text-on-surface-variant hover:text-primary transition-colors items-center justify-center w-10 h-10 rounded-full hover:bg-background-subtle">
           <span className="material-symbols-outlined">help</span>
         </button>
 
-        {/* Divider */}
         <div className="hidden md:block h-6 w-px bg-border-light mx-2" />
 
-        {/* Create Link CTA */}
         {isAuthenticated && (
           <button
             suppressHydrationWarning
@@ -78,7 +68,6 @@ export default function TopNavBar({ onCreateLink }: TopNavBarProps) {
           </button>
         )}
 
-        {/* User Avatar & Dropdown */}
         <div className="relative">
           <button
             onClick={() => setIsDropdownOpen((v) => !v)}
@@ -90,7 +79,6 @@ export default function TopNavBar({ onCreateLink }: TopNavBarProps) {
 
           {isDropdownOpen && (
             <>
-              {/* Overlay backdrop to close dropdown on click outside */}
               <div
                 className="fixed inset-0 z-40 bg-transparent"
                 onClick={() => setIsDropdownOpen(false)}

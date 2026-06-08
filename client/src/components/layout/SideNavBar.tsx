@@ -25,7 +25,6 @@ export default function SideNavBar() {
 
   return (
     <nav className="hidden md:flex flex-col h-full p-gutter fixed left-0 top-0 w-64 z-50 bg-sidebar-dark shadow-md">
-      {/* ── Logo / Brand ─────────────────────────────── */}
       <div className="mb-8 px-2 flex flex-col gap-1">
         {/* eslint-disable-next-line @next/next/no-img-element */}
         <img
@@ -37,7 +36,7 @@ export default function SideNavBar() {
           Enterprise Tier
         </p>
       </div>
-      {/* ── Navigation Links ──────────────────────────── */}
+
       <div className="flex-1 flex flex-col gap-1">
         {NAV_ITEMS.map((item) => {
           const isActive =
@@ -55,9 +54,7 @@ export default function SideNavBar() {
                   : 'flex items-center gap-3 px-3 py-2 text-secondary-fixed-dim hover:text-surface-container-lowest hover:bg-[#334670] transition-colors duration-200 rounded-lg'
               }
             >
-              <span
-                className={`material-symbols-outlined${isActive ? ' fill' : ''}`}
-              >
+              <span className={`material-symbols-outlined${isActive ? ' fill' : ''}`}>
                 {item.icon}
               </span>
               <span className="font-body-md text-body-md">{item.label}</span>
@@ -66,9 +63,7 @@ export default function SideNavBar() {
         })}
       </div>
 
-      {/* ── Footer CTA ────────────────────────────────── */}
       <div className="mt-auto pt-4 flex flex-col gap-2">
-
         {isAuthenticated ? (
           <button
             suppressHydrationWarning

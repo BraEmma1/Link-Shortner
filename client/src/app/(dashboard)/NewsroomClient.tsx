@@ -8,7 +8,6 @@ import api from '@/lib/api';
 export default function NewsroomClient() {
   const { isAuthenticated } = useAuth();
 
-  // Shortener form state
   const [targetUrl, setTargetUrl] = useState('');
   const [customSlug, setCustomSlug] = useState('');
   const [displayDomain, setDisplayDomain] = useState('thevaultzmedia.com');
@@ -17,17 +16,15 @@ export default function NewsroomClient() {
   useEffect(() => {
     if (typeof window !== 'undefined') {
       const isLocal = window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1';
-      if (isLocal) {
-        setDisplayDomain('localhost:5000');
-      }
+      if (isLocal) setDisplayDomain('localhost:5000');
     }
   }, []);
+
   const [error, setError] = useState('');
   const [generatedLink, setGeneratedLink] = useState('');
   const [isCopied, setIsCopied] = useState(false);
   const [isQRDownloading, setIsQRDownloading] = useState(false);
 
-  // Element reference for focus
   const urlInputRef = useRef<HTMLInputElement>(null);
 
   const handleGenerate = async (e: React.FormEvent) => {
@@ -38,7 +35,6 @@ export default function NewsroomClient() {
     setError('');
     setGeneratedLink('');
 
-    // Introduce a brief loading state for micro-animation feel
     await new Promise((resolve) => setTimeout(resolve, 600));
 
     try {
@@ -89,7 +85,6 @@ export default function NewsroomClient() {
       window.URL.revokeObjectURL(url);
     } catch (err) {
       console.error('Failed to download QR code', err);
-      // Fallback: open in a new window/tab
       window.open(`https://api.qrserver.com/v1/create-qr-code/?size=500x500&data=${encodeURIComponent(generatedLink)}&color=ad0014`, '_blank');
     } finally {
       setIsQRDownloading(false);
@@ -105,10 +100,8 @@ export default function NewsroomClient() {
 
   return (
     <div className="min-h-screen flex flex-col bg-background-subtle">
-      {/* ── Landing Header ── */}
       <header className="bg-surface border-b border-border-light shadow-sm w-full">
         <div className="flex justify-between items-center w-full px-margin-mobile md:px-margin-desktop max-w-container-max mx-auto h-20">
-          {/* Logo */}
           <div className="flex items-center gap-3 select-none">
             {/* eslint-disable-next-line @next/next/no-img-element */}
             <img
@@ -121,7 +114,6 @@ export default function NewsroomClient() {
             </span>
           </div>
 
-          {/* Action Button */}
           <div>
             {isAuthenticated ? (
               <Link
@@ -144,10 +136,8 @@ export default function NewsroomClient() {
         </div>
       </header>
 
-      {/* ── Main Landing Content ── */}
       <main className="flex-1 flex flex-col items-center justify-center px-margin-mobile py-16">
         <div className="w-full max-w-2xl space-y-8">
-          {/* Branding Banner */}
           <div className="text-center space-y-3">
             <h1 className="font-display-lg text-4xl md:text-5xl text-on-background font-extrabold tracking-tight">
               Instant Story Link Shortener
@@ -157,7 +147,6 @@ export default function NewsroomClient() {
             </p>
           </div>
 
-          {/* Shortener Container */}
           <div className="bg-surface-container-lowest rounded-2xl shadow-md border border-border-light/75 p-6 md:p-8 space-y-6">
             <form onSubmit={handleGenerate} className="space-y-5">
               {error && (
@@ -166,7 +155,6 @@ export default function NewsroomClient() {
                 </div>
               )}
 
-              {/* URL Input */}
               <div className="space-y-2">
                 <label className="block font-label-md text-label-md text-on-background font-bold">
                   Story URL
@@ -187,7 +175,6 @@ export default function NewsroomClient() {
                 </div>
               </div>
 
-              {/* Custom Slug Input */}
               <div className="space-y-2">
                 <label className="block font-label-md text-label-md text-on-background font-bold">
                   Custom Slug <span className="text-secondary-fixed-dim text-xs font-normal">(Optional)</span>
@@ -206,7 +193,6 @@ export default function NewsroomClient() {
                 </div>
               </div>
 
-              {/* Generate Button */}
               <button
                 type="submit"
                 disabled={isGenerating}
@@ -226,11 +212,9 @@ export default function NewsroomClient() {
               </button>
             </form>
 
-            {/* Results & Optional QR Code Preview */}
             {generatedLink && (
               <div className="bg-surface-container rounded-xl border border-primary-container/15 p-6 animate-fadeIn space-y-6">
                 <div className="flex flex-col md:flex-row items-center gap-6 justify-between">
-                  {/* Link Details */}
                   <div className="flex-1 w-full min-w-0 space-y-2">
                     <p className="font-label-sm text-label-sm text-primary uppercase tracking-widest font-extrabold">
                       Short Link Created
@@ -273,7 +257,6 @@ export default function NewsroomClient() {
                     </div>
                   </div>
 
-                  {/* QR Code Column */}
                   <div className="flex-shrink-0 w-full md:w-auto flex flex-col items-center justify-center p-3 bg-surface-container-lowest border border-border-light rounded-xl">
                     <div className="relative w-32 h-32 flex items-center justify-center bg-white p-1 rounded-lg shadow-sm border border-border-light/40 overflow-hidden">
                       {/* eslint-disable-next-line @next/next/no-img-element */}
@@ -303,7 +286,6 @@ export default function NewsroomClient() {
         </div>
       </main>
 
-      {/* ── Footer ── */}
       <footer className="py-8 bg-surface-container-lowest border-t border-border-light">
         <div className="max-w-container-max mx-auto px-margin-desktop flex flex-col md:flex-row justify-between items-center gap-4 text-xs font-semibold text-secondary">
           <div className="flex items-center gap-2 opacity-70">

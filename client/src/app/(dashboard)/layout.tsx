@@ -44,16 +44,12 @@ export default function DashboardLayout({
       };
 
       const { data } = await api.post('/links', payload);
-      
+
       if (data.success) {
         setGeneratedLink(data.link.shortUrl);
-        // Reset form
         setTargetUrl('');
         setCustomSlug('');
         setTitle('');
-        
-        // Optional: close modal automatically after a delay
-        // setTimeout(() => setIsCreateModalOpen(false), 2500);
       } else {
         setError(data.error || 'Failed to create link');
       }
@@ -84,28 +80,22 @@ export default function DashboardLayout({
 
   return (
     <div className="bg-background-subtle text-on-surface h-screen overflow-hidden flex">
-      {/* Fixed Sidebar */}
       <SideNavBar />
 
-      {/* Main Content Area */}
       <div className="flex-1 flex flex-col min-w-0 md:ml-64 w-full h-full relative">
-        {/* Sticky Top Bar */}
         <TopNavBar onCreateLink={() => setIsCreateModalOpen(true)} />
 
-        {/* Scrollable Page Content */}
         <main className="flex-1 p-margin-mobile md:p-margin-desktop overflow-y-auto pb-24 md:pb-margin-desktop">
           {children}
         </main>
 
-        {/* Mobile FAB for Create Action */}
-        <button 
+        <button
           onClick={() => setIsCreateModalOpen(true)}
           className="fixed bottom-24 right-6 w-14 h-14 bg-primary text-on-primary rounded-full shadow-lg flex items-center justify-center z-50 active:scale-95 transition-transform md:hidden"
         >
           <span className="material-symbols-outlined text-2xl">add</span>
         </button>
 
-        {/* Mobile Bottom Navigation Bar */}
         <nav className="fixed bottom-0 left-0 w-full z-40 flex justify-around items-center px-2 py-3 bg-surface border-t border-border-light shadow-lg rounded-t-xl md:hidden">
           {NAV_ITEMS.map((item) => {
             const isActive =
@@ -132,11 +122,10 @@ export default function DashboardLayout({
         </nav>
       </div>
 
-      {/* ── Create Link Modal (shared across all dashboard pages) ── */}
       <Modal
         isOpen={isCreateModalOpen}
         onClose={closeModal}
-        title={generatedLink ? "Link Created!" : "Create New Link"}
+        title={generatedLink ? 'Link Created!' : 'Create New Link'}
       >
         {generatedLink ? (
           <div className="p-6 pb-8">
@@ -146,12 +135,12 @@ export default function DashboardLayout({
               </div>
               <h3 className="text-on-surface font-headline-sm font-semibold mb-2">Short Link Ready!</h3>
               <p className="text-secondary font-body-sm mb-6">Your short URL has been generated and is ready to share.</p>
-              
+
               <div className="flex items-center gap-2 bg-surface-container-lowest border border-border-light rounded-lg p-1.5 pl-4 max-w-sm mx-auto shadow-inner">
-                <input 
-                  type="text" 
-                  value={generatedLink} 
-                  readOnly 
+                <input
+                  type="text"
+                  value={generatedLink}
+                  readOnly
                   className="bg-transparent border-none outline-none font-mono-code text-[14px] text-on-surface flex-1 min-w-0"
                 />
                 <button
@@ -182,128 +171,123 @@ export default function DashboardLayout({
           </div>
         ) : (
           <form onSubmit={handleCreateLink} className="p-6 space-y-5">
-            {/* Notifications */}
             {error && (
               <div className="bg-red-50 text-red-600 p-3 rounded-lg text-sm mb-4">
                 {error}
               </div>
             )}
-            {/* Destination URL */}
-          <div>
-            <label
-              htmlFor="destinationUrl"
-              className="block font-label-sm text-label-sm text-on-surface mb-1.5"
-            >
-              Destination URL <span className="text-primary">*</span>
-            </label>
-            <div className="relative">
-              <span className="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-secondary text-[20px]">
-                link
-              </span>
-              <input
-                id="destinationUrl"
-                type="url"
-                required
-                value={targetUrl}
-                onChange={(e) => setTargetUrl(e.target.value)}
-                placeholder="https://example.com/very/long/path/to/resource"
-                className="w-full pl-10 pr-4 py-2.5 bg-background-subtle border border-border-light rounded-lg focus:ring-2 focus:ring-primary focus:border-primary outline-none font-body-sm text-body-sm transition-all text-on-surface"
-              />
-            </div>
-            <p className="mt-1.5 font-body-sm text-[11px] text-secondary">
-              The long URL you want to shorten.
-            </p>
-          </div>
-
-          {/* Custom Slug & Title */}
-          <div className="grid grid-cols-1 sm:grid-cols-2 gap-5">
             <div>
               <label
-                htmlFor="customSlug"
+                htmlFor="destinationUrl"
                 className="block font-label-sm text-label-sm text-on-surface mb-1.5"
               >
-                Custom Slug{' '}
-                <span className="text-secondary font-normal ml-1">(Optional)</span>
+                Destination URL <span className="text-primary">*</span>
               </label>
-              <div className="flex items-center rounded-lg border border-border-light bg-background-subtle overflow-hidden focus-within:ring-2 focus-within:ring-primary focus-within:border-primary transition-all">
-                <span className="pl-3 pr-1 py-2.5 text-secondary font-mono-code text-[13px] bg-surface-variant/30 border-r border-border-light whitespace-nowrap">
-                  vlz.link/
+              <div className="relative">
+                <span className="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-secondary text-[20px]">
+                  link
                 </span>
                 <input
-                  id="customSlug"
+                  id="destinationUrl"
+                  type="url"
+                  required
+                  value={targetUrl}
+                  onChange={(e) => setTargetUrl(e.target.value)}
+                  placeholder="https://example.com/very/long/path/to/resource"
+                  className="w-full pl-10 pr-4 py-2.5 bg-background-subtle border border-border-light rounded-lg focus:ring-2 focus:ring-primary focus:border-primary outline-none font-body-sm text-body-sm transition-all text-on-surface"
+                />
+              </div>
+              <p className="mt-1.5 font-body-sm text-[11px] text-secondary">
+                The long URL you want to shorten.
+              </p>
+            </div>
+
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-5">
+              <div>
+                <label
+                  htmlFor="customSlug"
+                  className="block font-label-sm text-label-sm text-on-surface mb-1.5"
+                >
+                  Custom Slug{' '}
+                  <span className="text-secondary font-normal ml-1">(Optional)</span>
+                </label>
+                <div className="flex items-center rounded-lg border border-border-light bg-background-subtle overflow-hidden focus-within:ring-2 focus-within:ring-primary focus-within:border-primary transition-all">
+                  <span className="pl-3 pr-1 py-2.5 text-secondary font-mono-code text-[13px] bg-surface-variant/30 border-r border-border-light whitespace-nowrap">
+                    vlz.link/
+                  </span>
+                  <input
+                    id="customSlug"
+                    type="text"
+                    value={customSlug}
+                    onChange={(e) => setCustomSlug(e.target.value)}
+                    placeholder="my-campaign"
+                    className="w-full px-2 py-2.5 bg-transparent border-none focus:ring-0 outline-none font-mono-code text-[13px] text-on-surface"
+                  />
+                </div>
+              </div>
+
+              <div>
+                <label
+                  htmlFor="linkTitle"
+                  className="block font-label-sm text-label-sm text-on-surface mb-1.5"
+                >
+                  Link Title{' '}
+                  <span className="text-secondary font-normal ml-1">(Optional)</span>
+                </label>
+                <input
+                  id="linkTitle"
                   type="text"
-                  value={customSlug}
-                  onChange={(e) => setCustomSlug(e.target.value)}
-                  placeholder="my-campaign"
-                  className="w-full px-2 py-2.5 bg-transparent border-none focus:ring-0 outline-none font-mono-code text-[13px] text-on-surface"
+                  value={title}
+                  onChange={(e) => setTitle(e.target.value)}
+                  placeholder="Q3 Marketing Blast"
+                  className="w-full px-3 py-2.5 bg-background-subtle border border-border-light rounded-lg focus:ring-2 focus:ring-primary focus:border-primary outline-none font-body-sm text-body-sm transition-all text-on-surface"
                 />
               </div>
             </div>
 
             <div>
               <label
-                htmlFor="linkTitle"
+                htmlFor="expirationDate"
                 className="block font-label-sm text-label-sm text-on-surface mb-1.5"
               >
-                Link Title{' '}
+                Expiration Date{' '}
                 <span className="text-secondary font-normal ml-1">(Optional)</span>
               </label>
-              <input
-                id="linkTitle"
-                type="text"
-                value={title}
-                onChange={(e) => setTitle(e.target.value)}
-                placeholder="Q3 Marketing Blast"
-                className="w-full px-3 py-2.5 bg-background-subtle border border-border-light rounded-lg focus:ring-2 focus:ring-primary focus:border-primary outline-none font-body-sm text-body-sm transition-all text-on-surface"
-              />
+              <div className="relative">
+                <span className="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-secondary text-[20px]">
+                  calendar_today
+                </span>
+                <input
+                  id="expirationDate"
+                  type="datetime-local"
+                  className="w-full pl-10 pr-4 py-2.5 bg-background-subtle border border-border-light rounded-lg focus:ring-2 focus:ring-primary focus:border-primary outline-none font-body-sm text-body-sm transition-all text-on-surface"
+                />
+              </div>
             </div>
-          </div>
 
-          {/* Expiration Date */}
-          <div>
-            <label
-              htmlFor="expirationDate"
-              className="block font-label-sm text-label-sm text-on-surface mb-1.5"
-            >
-              Expiration Date{' '}
-              <span className="text-secondary font-normal ml-1">(Optional)</span>
-            </label>
-            <div className="relative">
-              <span className="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-secondary text-[20px]">
-                calendar_today
-              </span>
-              <input
-                id="expirationDate"
-                type="datetime-local"
-                className="w-full pl-10 pr-4 py-2.5 bg-background-subtle border border-border-light rounded-lg focus:ring-2 focus:ring-primary focus:border-primary outline-none font-body-sm text-body-sm transition-all text-on-surface"
-              />
+            <div className="flex justify-end gap-3 pt-2 border-t border-border-light -mx-6 px-6 pb-0 pt-4">
+              <button
+                type="button"
+                onClick={closeModal}
+                disabled={isLoading}
+                className="px-5 py-2.5 bg-surface-container-lowest border border-border-light text-on-surface rounded-lg font-label-md text-label-md hover:bg-surface-variant transition-colors min-h-[40px] disabled:opacity-50"
+              >
+                Cancel
+              </button>
+              <button
+                type="submit"
+                disabled={isLoading}
+                className="px-5 py-2.5 bg-primary text-white rounded-lg font-label-md text-label-md hover:bg-surface-tint transition-colors shadow-sm hover:shadow-md min-h-[40px] flex items-center gap-2 disabled:opacity-50"
+              >
+                {isLoading ? (
+                  <span className="material-symbols-outlined text-[18px] animate-spin">refresh</span>
+                ) : (
+                  <span className="material-symbols-outlined text-[18px]">auto_awesome</span>
+                )}
+                {isLoading ? 'Generating...' : 'Generate Link'}
+              </button>
             </div>
-          </div>
-
-          {/* Footer Actions */}
-          <div className="flex justify-end gap-3 pt-2 border-t border-border-light -mx-6 px-6 pb-0 pt-4">
-            <button
-              type="button"
-              onClick={closeModal}
-              disabled={isLoading}
-              className="px-5 py-2.5 bg-surface-container-lowest border border-border-light text-on-surface rounded-lg font-label-md text-label-md hover:bg-surface-variant transition-colors min-h-[40px] disabled:opacity-50"
-            >
-              Cancel
-            </button>
-            <button
-              type="submit"
-              disabled={isLoading}
-              className="px-5 py-2.5 bg-primary text-white rounded-lg font-label-md text-label-md hover:bg-surface-tint transition-colors shadow-sm hover:shadow-md min-h-[40px] flex items-center gap-2 disabled:opacity-50"
-            >
-              {isLoading ? (
-                <span className="material-symbols-outlined text-[18px] animate-spin">refresh</span>
-              ) : (
-                <span className="material-symbols-outlined text-[18px]">auto_awesome</span>
-              )}
-              {isLoading ? 'Generating...' : 'Generate Link'}
-            </button>
-          </div>
-        </form>
+          </form>
         )}
       </Modal>
     </div>

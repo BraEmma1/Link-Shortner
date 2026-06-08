@@ -99,9 +99,9 @@ export const getQRCodes = async (req, res) => {
 };
 
 /**
- * @desc    Download QR Code (PNG or SVG)
- * @route   GET /api/v1/qrcodes/:id/download
- * @access  Private
+ * @desc    
+ * @route   
+ * @access  
  */
 export const downloadQRCode = async (req, res) => {
   try {

@@ -6,7 +6,7 @@ import api from '@/lib/api';
 import KpiCard from '@/components/ui/KpiCard';
 import {
   LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip as RechartsTooltip, ResponsiveContainer,
-  BarChart, Bar, PieChart, Pie, Cell, Legend
+  BarChart, Bar, PieChart, Pie, Cell, Legend,
 } from 'recharts';
 
 const COLORS = ['#2563eb', '#3b82f6', '#60a5fa', '#93c5fd', '#bfdbfe'];
@@ -24,7 +24,6 @@ export default function DashboardClient() {
   const [isCalendarOpen, setIsCalendarOpen] = useState(false);
   const [queryParams, setQueryParams] = useState<Record<string, string>>({ days: '30' });
 
-  // Initialize custom dates defaults
   useEffect(() => {
     const end = new Date();
     const start = new Date();
@@ -68,7 +67,7 @@ export default function DashboardClient() {
     }
     setQueryParams({
       startDate: selectedStart.toISOString().split('T')[0],
-      endDate: selectedEnd.toISOString().split('T')[0]
+      endDate: selectedEnd.toISOString().split('T')[0],
     });
     setIsCalendarOpen(false);
   };
@@ -78,31 +77,22 @@ export default function DashboardClient() {
     const month = date.getMonth();
     const firstDayIndex = new Date(year, month, 1).getDay();
     const totalDays = new Date(year, month + 1, 0).getDate();
-    
     const prevMonthTotalDays = new Date(year, month, 0).getDate();
+
     const prevMonthDays = [];
     for (let i = firstDayIndex - 1; i >= 0; i--) {
-      prevMonthDays.push({
-        date: new Date(year, month - 1, prevMonthTotalDays - i),
-        isCurrentMonth: false,
-      });
+      prevMonthDays.push({ date: new Date(year, month - 1, prevMonthTotalDays - i), isCurrentMonth: false });
     }
 
     const currentMonthDays = [];
     for (let i = 1; i <= totalDays; i++) {
-      currentMonthDays.push({
-        date: new Date(year, month, i),
-        isCurrentMonth: true,
-      });
+      currentMonthDays.push({ date: new Date(year, month, i), isCurrentMonth: true });
     }
 
     const nextMonthDays = [];
     const remainingCells = 42 - (prevMonthDays.length + currentMonthDays.length);
     for (let i = 1; i <= remainingCells; i++) {
-      nextMonthDays.push({
-        date: new Date(year, month + 1, i),
-        isCurrentMonth: false,
-      });
+      nextMonthDays.push({ date: new Date(year, month + 1, i), isCurrentMonth: false });
     }
 
     return [...prevMonthDays, ...currentMonthDays, ...nextMonthDays];
@@ -145,29 +135,20 @@ export default function DashboardClient() {
     return d > s && d < h;
   };
 
-  const handlePrevMonth = () => {
+  const handlePrevMonth = () =>
     setCurrentMonth(new Date(currentMonth.getFullYear(), currentMonth.getMonth() - 1, 1));
-  };
 
-  const handleNextMonth = () => {
+  const handleNextMonth = () =>
     setCurrentMonth(new Date(currentMonth.getFullYear(), currentMonth.getMonth() + 1, 1));
-  };
+
+  const formatDateLabel = (d: Date) =>
+    d.toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' });
 
   const getTriggerLabel = () => {
-    if (filterType !== 'custom') {
-      return `Last ${filterType} Days`;
-    }
-    if (selectedStart && selectedEnd) {
-      return `${formatDateLabel(selectedStart)} - ${formatDateLabel(selectedEnd)}`;
-    }
-    if (selectedStart) {
-      return `${formatDateLabel(selectedStart)} - Select end`;
-    }
+    if (filterType !== 'custom') return `Last ${filterType} Days`;
+    if (selectedStart && selectedEnd) return `${formatDateLabel(selectedStart)} - ${formatDateLabel(selectedEnd)}`;
+    if (selectedStart) return `${formatDateLabel(selectedStart)} - Select end`;
     return 'Custom Range';
-  };
-
-  const formatDateLabel = (d: Date) => {
-    return d.toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' });
   };
 
   if (isLoading) {
@@ -195,19 +176,16 @@ export default function DashboardClient() {
 
   return (
     <>
-      {/* ── Page Header ───────────────────────────────────────────── */}
       <div className="flex flex-col md:flex-row md:items-end justify-between gap-4 mb-8">
         <div>
-          <h2 className="font-headline-lg text-headline-lg font-bold text-on-background">
-            Overview
-          </h2>
+          <h2 className="font-headline-lg text-headline-lg font-bold text-on-background">Overview</h2>
           <p className="font-body-md text-body-md text-secondary mt-1">
             Track your link performance and audience engagement.
           </p>
         </div>
         <div className="relative">
           <button
-            onClick={() => setIsCalendarOpen(v => !v)}
+            onClick={() => setIsCalendarOpen((v) => !v)}
             className="flex items-center gap-2 bg-surface-container-lowest border border-border-light rounded-lg px-4 py-2 font-body-sm text-body-sm hover:bg-background-subtle focus:ring-2 focus:ring-secondary transition-all outline-none text-on-surface cursor-pointer shadow-sm select-none"
           >
             <span className="material-symbols-outlined text-[18px] text-secondary">calendar_today</span>
@@ -217,13 +195,8 @@ export default function DashboardClient() {
 
           {isCalendarOpen && (
             <>
-              {/* Overlay backdrop to close picker on click outside */}
-              <div
-                className="fixed inset-0 z-40 bg-transparent"
-                onClick={() => setIsCalendarOpen(false)}
-              />
+              <div className="fixed inset-0 z-40 bg-transparent" onClick={() => setIsCalendarOpen(false)} />
               <div className="absolute left-0 sm:left-auto sm:right-0 mt-2 bg-surface-container-lowest border border-border-light rounded-xl shadow-lg z-50 flex flex-col sm:flex-row divide-y sm:divide-y-0 sm:divide-x divide-border-light overflow-hidden animate-fadeIn">
-                {/* Presets Panel (Left side) */}
                 <div className="p-3 flex flex-col gap-1 w-full sm:w-40 bg-background-subtle/50">
                   <span className="text-[10px] font-bold text-secondary uppercase tracking-wider px-2 py-1 mb-1 select-none">Presets</span>
                   {[
@@ -231,7 +204,7 @@ export default function DashboardClient() {
                     { label: 'Last 21 Days', value: '21' },
                     { label: 'Last 30 Days', value: '30' },
                     { label: 'Custom Range', value: 'custom' },
-                  ].map(preset => {
+                  ].map((preset) => {
                     const isActive = filterType === preset.value;
                     return (
                       <button
@@ -245,9 +218,7 @@ export default function DashboardClient() {
                           }
                         }}
                         className={`text-left px-3 py-2 text-xs font-semibold rounded-lg transition-all ${
-                          isActive 
-                            ? 'bg-primary/10 text-primary' 
-                            : 'text-on-surface hover:bg-background-subtle'
+                          isActive ? 'bg-primary/10 text-primary' : 'text-on-surface hover:bg-background-subtle'
                         }`}
                       >
                         {preset.label}
@@ -256,14 +227,12 @@ export default function DashboardClient() {
                   })}
                 </div>
 
-                {/* Calendar Panel (Right side) - only shown for custom selection */}
                 {filterType === 'custom' && (
                   <div className="p-4 w-72 select-none">
-                    {/* Month navigation */}
                     <div className="flex items-center justify-between mb-4">
-                      <button 
+                      <button
                         onClick={handlePrevMonth}
-                        type="button" 
+                        type="button"
                         className="p-1 hover:bg-background-subtle rounded-full text-secondary hover:text-on-surface transition-colors"
                       >
                         <span className="material-symbols-outlined text-[18px] font-bold">chevron_left</span>
@@ -271,25 +240,23 @@ export default function DashboardClient() {
                       <span className="font-semibold text-xs text-on-surface">
                         {currentMonth.toLocaleDateString('en-US', { month: 'long', year: 'numeric' })}
                       </span>
-                      <button 
+                      <button
                         onClick={handleNextMonth}
-                        type="button" 
+                        type="button"
                         className="p-1 hover:bg-background-subtle rounded-full text-secondary hover:text-on-surface transition-colors"
                       >
                         <span className="material-symbols-outlined text-[18px] font-bold">chevron_right</span>
                       </button>
                     </div>
 
-                    {/* Weekdays */}
                     <div className="grid grid-cols-7 gap-1 text-center mb-1">
-                      {['Su', 'Mo', 'Tu', 'We', 'Th', 'Fr', 'Sa'].map(d => (
+                      {['Su', 'Mo', 'Tu', 'We', 'Th', 'Fr', 'Sa'].map((d) => (
                         <span key={d} className="text-[10px] font-bold text-secondary uppercase tracking-wider py-1">
                           {d}
                         </span>
                       ))}
                     </div>
 
-                    {/* Days Grid */}
                     <div className="grid grid-cols-7 gap-1">
                       {getDaysInMonth(currentMonth).map(({ date, isCurrentMonth }, idx) => {
                         const isSelectedStart = isSameDay(date, selectedStart);
@@ -297,16 +264,16 @@ export default function DashboardClient() {
                         const inRange = isBetweenDays(date, selectedStart, selectedEnd);
                         const inPreview = isBetweenPreview(date, selectedStart, hoveredDate);
 
-                        let btnClass = "w-8 h-8 flex items-center justify-center text-xs font-semibold rounded-lg transition-all focus:outline-none ";
-                        
+                        let btnClass = 'w-8 h-8 flex items-center justify-center text-xs font-semibold rounded-lg transition-all focus:outline-none ';
+
                         if (isSelectedStart || isSelectedEnd) {
-                          btnClass += "bg-primary text-white shadow-sm font-bold scale-95";
+                          btnClass += 'bg-primary text-white shadow-sm font-bold scale-95';
                         } else if (inRange || inPreview) {
-                          btnClass += "bg-primary/10 text-primary rounded-none hover:bg-primary/20";
+                          btnClass += 'bg-primary/10 text-primary rounded-none hover:bg-primary/20';
                         } else {
-                          btnClass += isCurrentMonth 
-                            ? "text-on-surface hover:bg-background-subtle" 
-                            : "text-secondary/40 hover:bg-background-subtle";
+                          btnClass += isCurrentMonth
+                            ? 'text-on-surface hover:bg-background-subtle'
+                            : 'text-secondary/40 hover:bg-background-subtle';
                         }
 
                         return (
@@ -324,7 +291,6 @@ export default function DashboardClient() {
                       })}
                     </div>
 
-                    {/* Actions */}
                     <div className="flex justify-end gap-2 mt-4 pt-3 border-t border-border-light">
                       <button
                         type="button"
@@ -349,7 +315,6 @@ export default function DashboardClient() {
         </div>
       </div>
 
-      {/* ── KPI Cards ─────────────────────────────────────────────── */}
       <div className="grid grid-cols-2 lg:grid-cols-4 gap-4 md:gap-gutter mb-gutter">
         <KpiCard
           icon="link"
@@ -389,9 +354,7 @@ export default function DashboardClient() {
         />
       </div>
 
-      {/* ── Analytics Bento Grid ───────────────────────────────────── */}
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-gutter mb-gutter">
-        {/* Click Trends Chart */}
         <div className="lg:col-span-2 bg-surface-container-lowest rounded-lg border border-border-light shadow-sm p-gutter flex flex-col min-h-[320px]">
           <div className="flex justify-between items-center mb-6">
             <h3 className="font-headline-md text-headline-md text-on-background">
@@ -408,7 +371,7 @@ export default function DashboardClient() {
                   <CartesianGrid strokeDasharray="3 3" vertical={false} stroke="#e2e8f0" />
                   <XAxis dataKey="date" tick={{ fill: '#64748b', fontSize: 12 }} tickLine={false} axisLine={false} tickFormatter={(val) => val.split('-').slice(1).join('/')} />
                   <YAxis allowDecimals={false} tick={{ fill: '#64748b', fontSize: 12 }} tickLine={false} axisLine={false} />
-                  <RechartsTooltip 
+                  <RechartsTooltip
                     contentStyle={{ borderRadius: '8px', border: 'none', boxShadow: '0 4px 6px -1px rgb(0 0 0 / 0.1)' }}
                     labelStyle={{ color: '#64748b', fontWeight: 'bold', marginBottom: '4px' }}
                   />
@@ -421,12 +384,9 @@ export default function DashboardClient() {
           </div>
         </div>
 
-        {/* Traffic Sources + Device Breakdown */}
         <div className="lg:col-span-1 flex flex-col gap-gutter">
           <div className="flex-1 bg-surface-container-lowest rounded-lg border border-border-light shadow-sm p-gutter min-h-[200px] flex flex-col">
-            <h3 className="font-headline-md text-[18px] text-on-background mb-2">
-              Traffic Sources
-            </h3>
+            <h3 className="font-headline-md text-[18px] text-on-background mb-2">Traffic Sources</h3>
             <div className="flex-1 w-full min-h-[140px]">
               {data.trafficSources?.length > 0 ? (
                 <ResponsiveContainer width="100%" height="100%">
@@ -443,9 +403,7 @@ export default function DashboardClient() {
             </div>
           </div>
           <div className="flex-1 bg-surface-container-lowest rounded-lg border border-border-light shadow-sm p-gutter min-h-[200px] flex flex-col">
-            <h3 className="font-headline-md text-[18px] text-on-background mb-2">
-              Device Breakdown
-            </h3>
+            <h3 className="font-headline-md text-[18px] text-on-background mb-2">Device Breakdown</h3>
             <div className="flex-1 w-full min-h-[140px]">
               {data.deviceBreakdown?.length > 0 ? (
                 <ResponsiveContainer width="100%" height="100%">
@@ -476,45 +434,33 @@ export default function DashboardClient() {
         </div>
       </div>
 
-      {/* ── Recent Links Table / Cards on Mobile ───────────────────── */}
       <div className="bg-surface-container-lowest rounded-lg border border-border-light shadow-sm overflow-hidden flex flex-col mb-12">
         <div className="p-gutter border-b border-border-light flex justify-between items-center">
-          <h3 className="font-headline-md text-headline-md text-on-background">
-            Top Performing Links
-          </h3>
-          <Link
-            href="/dashboard/links"
-            className="text-primary font-label-md text-label-md hover:underline font-bold"
-          >
+          <h3 className="font-headline-md text-headline-md text-on-background">Top Performing Links</h3>
+          <Link href="/dashboard/links" className="text-primary font-label-md text-label-md hover:underline font-bold">
             View All
           </Link>
         </div>
 
-        {/* Desktop View Table */}
         <div className="overflow-x-auto hidden md:block">
           <table className="w-full text-left border-collapse min-w-[700px]">
             <thead>
               <tr className="bg-[#F1F5F9] border-b border-border-light">
-                {['Title', 'Short URL', 'Clicks', 'Status', 'Actions'].map(
-                  (col) => (
-                    <th
-                      key={col}
-                      className={`py-3 px-gutter font-label-sm text-label-sm uppercase text-on-surface-variant font-semibold${col === 'Actions' || col === 'Clicks' ? ' text-right' : ''}`}
-                    >
-                      {col}
-                    </th>
-                  )
-                )}
+                {['Title', 'Short URL', 'Clicks', 'Status', 'Actions'].map((col) => (
+                  <th
+                    key={col}
+                    className={`py-3 px-gutter font-label-sm text-label-sm uppercase text-on-surface-variant font-semibold${col === 'Actions' || col === 'Clicks' ? ' text-right' : ''}`}
+                  >
+                    {col}
+                  </th>
+                ))}
               </tr>
             </thead>
             <tbody className="font-body-sm text-body-sm text-on-background">
               {data.topLinks?.length === 0 ? (
                 <tr><td colSpan={5} className="py-8 text-center text-secondary">No links created yet.</td></tr>
               ) : data.topLinks?.map((link: any) => (
-                <tr
-                  key={link._id}
-                  className="border-b border-border-light/50 hover:bg-background-subtle transition-all last:border-0"
-                >
+                <tr key={link._id} className="border-b border-border-light/50 hover:bg-background-subtle transition-all last:border-0">
                   <td className="py-4 px-gutter font-medium">{link.title || 'Untitled'}</td>
                   <td className="py-4 px-gutter">
                     <a href={link.shortUrl} target="_blank" rel="noopener noreferrer" className="font-mono-code text-[13px] text-primary hover:underline">
@@ -523,9 +469,7 @@ export default function DashboardClient() {
                   </td>
                   <td className="py-4 px-gutter text-right font-mono-code font-semibold">{link.clicks.toLocaleString()}</td>
                   <td className="py-4 px-gutter">
-                    <span className={`inline-block px-2 py-1 rounded-full text-xs font-semibold ${
-                      link.status === 'active' ? 'bg-green-100 text-green-700' : 'bg-gray-100 text-gray-700'
-                    }`}>
+                    <span className={`inline-block px-2 py-1 rounded-full text-xs font-semibold ${link.status === 'active' ? 'bg-green-100 text-green-700' : 'bg-gray-100 text-gray-700'}`}>
                       {link.status === 'active' ? 'Active' : 'Inactive'}
                     </span>
                   </td>
@@ -540,7 +484,6 @@ export default function DashboardClient() {
           </table>
         </div>
 
-        {/* Mobile View Cards List */}
         <div className="block md:hidden divide-y divide-border-light/50">
           {data.topLinks?.length === 0 ? (
             <div className="py-8 text-center text-secondary text-sm">No links created yet.</div>
@@ -559,10 +502,8 @@ export default function DashboardClient() {
                       <span className="font-mono-code text-[11px] text-tertiary bg-surface-container px-1.5 py-0.5 rounded truncate max-w-[150px]">
                         {link.shortUrl?.replace(/^https?:\/\//, '') || link.slug}
                       </span>
-                      <button 
-                        onClick={() => {
-                          navigator.clipboard.writeText(link.shortUrl);
-                        }}
+                      <button
+                        onClick={() => navigator.clipboard.writeText(link.shortUrl)}
                         className="text-secondary hover:text-primary transition-colors"
                         title="Copy link"
                       >
@@ -577,7 +518,7 @@ export default function DashboardClient() {
                   </span>
                   <span className="font-label-sm text-label-sm text-secondary">clicks</span>
                   <div className="flex items-center gap-1.5 mt-1">
-                    <span className={`w-1.5 h-1.5 rounded-full ${link.status === 'active' ? 'bg-[#1FB07E]' : 'bg-secondary'}`}></span>
+                    <span className={`w-1.5 h-1.5 rounded-full ${link.status === 'active' ? 'bg-[#1FB07E]' : 'bg-secondary'}`} />
                     <Link href={`/dashboard/analytics?linkId=${link._id}`} className="text-primary text-xs hover:underline flex items-center">
                       <span className="material-symbols-outlined text-base">bar_chart</span>
                     </Link>
