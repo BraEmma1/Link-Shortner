@@ -24,7 +24,7 @@ const nextConfig = {
       {
         // Proxy short-link slugs (e.g. /2b872a) to the Express redirect engine
         // This MUST come after /api to avoid accidentally proxying API routes
-        source: '/:slug([a-zA-Z0-9]+)',
+        source: '/:slug([a-zA-Z0-9_-]+)',
         destination: `${apiBase}/:slug`,
       },
     ];

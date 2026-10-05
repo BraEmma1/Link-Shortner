@@ -1,17 +1,18 @@
 'use client';
 
 import { useState, useRef, useEffect } from 'react';
-import Link from 'next/link';
-import { useAuth } from '@/context/AuthContext';
-import api from '@/lib/api';
+import { errorMessage, getLinkStats, shortenUrl, type ShortLink } from '@/lib/api';
 
 export default function NewsroomClient() {
-  const { isAuthenticated } = useAuth();
-
   const [targetUrl, setTargetUrl] = useState('');
   const [customSlug, setCustomSlug] = useState('');
   const [displayDomain, setDisplayDomain] = useState('thevaultzmedia.com');
   const [isGenerating, setIsGenerating] = useState(false);
+
+  const [statsSlug, setStatsSlug] = useState('');
+  const [stats, setStats] = useState<ShortLink | null>(null);
+  const [statsError, setStatsError] = useState('');
+  const [isLoadingStats, setIsLoadingStats] = useState(false);
 
   useEffect(() => {
     if (typeof window !== 'undefined') {
@@ -19,6 +20,23 @@ export default function NewsroomClient() {
       if (isLocal) setDisplayDomain('localhost:5000');
     }
   }, []);
+
+  const handleCheckClicks = async (e: React.FormEvent) => {
+    e.preventDefault();
+    const slug = statsSlug.trim().replace(/^.*\//, '');
+    if (!slug) return;
+
+    setIsLoadingStats(true);
+    setStatsError('');
+    setStats(null);
+    try {
+      setStats(await getLinkStats(slug));
+    } catch (err) {
+      setStatsError(errorMessage(err, 'Could not load click count'));
+    } finally {
+      setIsLoadingStats(false);
+    }
+  };
 
   const [error, setError] = useState('');
   const [generatedLink, setGeneratedLink] = useState('');
@@ -38,24 +56,10 @@ export default function NewsroomClient() {
     await new Promise((resolve) => setTimeout(resolve, 600));
 
     try {
-      const payload = {
-        targetUrl,
-        customSlug: customSlug || undefined,
-      };
-
-      const { data } = await api.post('/links', payload);
-
-      if (data.success) {
-        setGeneratedLink(data.link.shortUrl);
-      } else {
-        setError(data.error || 'Failed to generate link');
-      }
-    } catch (err: any) {
-      setError(
-        err.response?.data?.error ||
-        err.message ||
-        'An error occurred while generating the short URL'
-      );
+      const link = await shortenUrl(targetUrl, customSlug || undefined);
+      setGeneratedLink(link.shortUrl);
+    } catch (err) {
+      setError(errorMessage(err, 'An error occurred while generating the short URL'));
     } finally {
       setIsGenerating(false);
     }
@@ -113,26 +117,6 @@ export default function NewsroomClient() {
               Newsroom Portal
             </span>
           </div>
-
-          <div>
-            {isAuthenticated ? (
-              <Link
-                href="/dashboard"
-                className="bg-primary hover:bg-primary-container text-white px-5 py-2.5 rounded-lg font-label-md text-label-md transition-all active:scale-95 shadow-sm inline-flex items-center gap-2 hover:shadow"
-              >
-                <span className="material-symbols-outlined text-[18px]">dashboard</span>
-                <span>Open Dashboard</span>
-              </Link>
-            ) : (
-              <Link
-                href="/login"
-                className="bg-surface-container-lowest border border-border-light hover:bg-surface-container-low text-on-surface px-5 py-2.5 rounded-lg font-label-md text-label-md transition-all active:scale-95 shadow-sm inline-flex items-center gap-2"
-              >
-                <span className="material-symbols-outlined text-[18px]">login</span>
-                <span>Login</span>
-              </Link>
-            )}
-          </div>
         </div>
       </header>
 
@@ -143,7 +127,7 @@ export default function NewsroomClient() {
               Instant Story Link Shortener
             </h1>
             <p className="font-body-lg text-body-md md:text-body-lg text-secondary max-w-lg mx-auto leading-relaxed">
-              Paste your long URL to generate a trackable shortcut in seconds.
+              Paste your long URL to generate a short link in seconds.
             </p>
           </div>
 
@@ -283,6 +267,42 @@ export default function NewsroomClient() {
               </div>
             )}
           </div>
+
+          <form
+            onSubmit={handleCheckClicks}
+            className="bg-surface-container-lowest rounded-2xl shadow-md border border-border-light/75 p-6 md:p-8 space-y-4"
+          >
+            <label className="block font-label-md text-label-md text-on-background font-bold">
+              Check clicks
+            </label>
+            <div className="flex gap-3">
+              <input
+                type="text"
+                value={statsSlug}
+                onChange={(e) => setStatsSlug(e.target.value)}
+                placeholder="Slug or short link, e.g. galamsey"
+                className="flex-1 min-w-0 px-4 py-3 bg-background-subtle border border-border-light rounded-xl outline-none font-body-md text-body-md text-on-surface shadow-inner"
+              />
+              <button
+                type="submit"
+                disabled={isLoadingStats}
+                className="bg-on-background text-white px-5 py-3 rounded-xl font-label-md text-label-md hover:bg-black transition-all disabled:opacity-50"
+              >
+                {isLoadingStats ? 'Loading...' : 'Check'}
+              </button>
+            </div>
+            {statsError && (
+              <div className="bg-red-50 border border-red-100 text-red-600 p-3 rounded-xl text-sm font-medium">
+                {statsError}
+              </div>
+            )}
+            {stats && (
+              <p className="font-body-md text-body-md text-on-surface">
+                <code className="font-mono-code text-primary font-bold">{stats.shortUrl}</code> has{' '}
+                <strong>{stats.clicks.toLocaleString()}</strong> {stats.clicks === 1 ? 'click' : 'clicks'}.
+              </p>
+            )}
+          </form>
         </div>
       </main>
 

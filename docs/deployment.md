@@ -14,21 +14,7 @@ This guide details steps to deploy the Vaultz Links backend API server and Next.
 
 ---
 
-## 2. WordPress JWT Authentication Setup
-
-To validate users using WordPress credentials, your WordPress site must have the JWT Authentication plugin configured:
-
-1. Install the **JWT Auth** plugin (e.g., *JWT Authentication for WP-API* by pitch-grade or similar).
-2. Edit the WordPress `wp-config.php` file to define the JWT Secret Key:
-   ```php
-   define('JWT_AUTH_SECRET_KEY', 'your-strong-random-secret-key-phrase');
-   define('JWT_AUTH_CORS_ENABLE', true);
-   ```
-3. Ensure this secret matches the `WP_JWT_SECRET` environment variable configured in your Express backend `.env`.
-
----
-
-## 3. Backend Deployment: Express API Server
+## 2. Backend Deployment: Express API Server
 
 The backend can be hosted on platforms like **Render**, **Railway**, **Heroku**, or a custom VPS.
 
@@ -42,8 +28,6 @@ The backend can be hosted on platforms like **Render**, **Railway**, **Heroku**,
 4. Add the **Environment Variables** in the provider dashboard (do not upload the `.env` file):
    - `NODE_ENV=production`
    - `MONGO_URI=mongodb+srv://...`
-   - `WP_JWT_SECRET=your-shared-wordpress-key`
-   - `WP_URL=https://your-wordpress-site.com`
    - `CLIENT_URL=https://your-frontend-domain.com`
    - `BASE_URL=https://your-short-link-domain.com` (If you have a short domain mapped to redirect visitors, e.g. `https://vlz.link`)
    - `PORT=80` (or leave default to let Render bind dynamic ports).
@@ -63,7 +47,7 @@ The backend can be hosted on platforms like **Render**, **Railway**, **Heroku**,
 
 ---
 
-## 4. Frontend Deployment: Next.js Client
+## 3. Frontend Deployment: Next.js Client
 
 The client is optimized for serverless platforms like **Vercel** or **Netlify**.
 
@@ -76,14 +60,14 @@ The client is optimized for serverless platforms like **Vercel** or **Netlify**.
    - **Install Command**: `npm install`
 4. Configure the **Environment Variables**:
    - `NEXT_PUBLIC_API_URL=https://your-backend-api-domain.com/api`
-   - `NEXT_PUBLIC_APP_NAME=Vaultz Links`
 5. Click **Deploy**. Vercel will build and assign an SSL-enabled domain.
 
 ---
 
-## 5. Post-Deployment Verification Checklist
+## 4. Post-Deployment Verification Checklist
 
 1. **Redirection Engine**: Visit `https://your-short-domain.com/test-slug` and verify redirection goes to correct target destination.
 2. **Access Control CORS**: Ensure Axios request logs from the frontend console do not return CORS preflight errors.
-3. **Database Check**: Check MongoDB collection sizes to ensure `analytics` entries are successfully created for each redirect.
+3. **Create + Clicks**: Create a link on the page, open it, then use "Check clicks" and confirm the count went up by one.
 4. **Log Checks**: Inspect cloud logs (`Render`/`PM2`) to confirm no start warnings or DB connection retry flags are emitted.
+

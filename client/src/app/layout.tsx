@@ -1,6 +1,5 @@
 import type { Metadata } from 'next';
 import './globals.css';
-import { AuthProvider } from '@/context/AuthContext';
 import KeepAliveProvider from '@/components/KeepAliveProvider';
 
 export const metadata: Metadata = {
@@ -8,9 +7,8 @@ export const metadata: Metadata = {
     default: 'The Vaultz Corporation',
     template: '%s | The Vaultz Corporation',
   },
-  description:
-    'Enterprise-grade URL shortening, QR code generation, and link analytics platform.',
-  keywords: ['URL shortener', 'link management', 'QR codes', 'analytics'],
+  description: 'Short links for The Vaultz Corporation.',
+  keywords: ['URL shortener'],
   icons: {
     icon: '/assets/TheVaultzLogo_cubic_For_newsletter.jpg',
   },
@@ -76,7 +74,7 @@ export default function RootLayout({
       </head>
       <body className="bg-background text-on-surface font-body-md antialiased" suppressHydrationWarning>
         <KeepAliveProvider />
-        <AuthProvider>{children}</AuthProvider>
+        {children}
       </body>
     </html>
   );

@@ -1,46 +1,31 @@
 import { rateLimit } from 'express-rate-limit';
 
-/**
- * Global rate limiter for standard API routes.
- * Limits each IP to 100 requests per 15 minutes.
- */
-export const apiLimiter = rateLimit({
-  windowMs: 15 * 60 * 1000, // 15 minutes
-  max: 100,
-  standardHeaders: true,
-  legacyHeaders: false,
-  message: {
-    success: false,
-    error: 'Too many requests from this IP, please try again after 15 minutes.',
-  },
-});
+const limiter = (windowMs, max, error) =>
+  rateLimit({
+    windowMs,
+    max,
+    standardHeaders: true,
+    legacyHeaders: false,
+    message: { success: false, error },
+  });
 
-/**
- * Stricter rate limiter for authentication routes.
- * Limits each IP to 15 login attempts per 15 minutes to prevent brute-forcing.
- */
-export const authLimiter = rateLimit({
-  windowMs: 15 * 60 * 1000, // 15 minutes
-  max: 15,
-  standardHeaders: true,
-  legacyHeaders: false,
-  message: {
-    success: false,
-    error: 'Too many authentication attempts from this IP, please try again after 15 minutes.',
-  },
-});
+/** General API limiter: 300 requests per 15 minutes per IP. */
+export const apiLimiter = limiter(
+  15 * 60 * 1000,
+  300,
+  'Too many requests from this IP, please try again after 15 minutes.'
+);
 
-/**
- * High-throughput rate limiter for short link redirection engine.
- * Limits each IP to 1000 redirects per minute to shield the database against scrapers/DDoS.
- */
-export const redirectLimiter = rateLimit({
-  windowMs: 60 * 1000, // 1 minute
-  max: 1000,
-  standardHeaders: true,
-  legacyHeaders: false,
-  message: {
-    success: false,
-    error: 'Rate limit exceeded. Too many redirect requests.',
-  },
-});
+/** Link creation limiter: 30 per 15 minutes per IP. Creation is open to everyone, so this limits abuse. */
+export const createLimiter = limiter(
+  15 * 60 * 1000,
+  30,
+  'Too many link creation attempts from this IP, please try again later.'
+);
+
+/** Redirect limiter: 1000 per minute per IP. */
+export const redirectLimiter = limiter(
+  60 * 1000,
+  1000,
+  'Rate limit exceeded. Too many redirect requests.'
+);

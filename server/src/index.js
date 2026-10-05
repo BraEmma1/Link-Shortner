@@ -7,7 +7,7 @@ import dns from 'node:dns/promises';
 
 dns.setServers(['1.1.1.1', '1.0.0.1']);
 
-const requiredEnv = ['MONGO_URI', 'WP_JWT_SECRET', 'CLIENT_URL'];
+const requiredEnv = ['MONGO_URI', 'CLIENT_URL'];
 const missing = requiredEnv.filter((key) => !process.env[key]);
 
 if (missing.length > 0) {
@@ -18,14 +18,6 @@ if (missing.length > 0) {
   } else {
     console.warn(`⚠️ Warning: ${errorMsg}. Dev environment may not function properly.`);
   }
-}
-
-if (
-  process.env.WP_JWT_SECRET === 'your_wordpress_jwt_secret_here' &&
-  process.env.NODE_ENV === 'production'
-) {
-  console.error('❌ Security Alert: WP_JWT_SECRET is set to the insecure default placeholder in production!');
-  process.exit(1);
 }
 
 import connectDB from './config/db.js';
@@ -80,7 +72,7 @@ app.use(
     },
     credentials: true,
     methods: ['GET', 'POST', 'PUT', 'PATCH', 'DELETE', 'OPTIONS'],
-    allowedHeaders: ['Content-Type', 'Authorization'],
+    allowedHeaders: ['Content-Type', 'x-api-key'],
   })
 );
 
@@ -109,7 +101,7 @@ app.use((req, res) => {
 
 app.use(errorHandler);
 
-const PORT = process.env.PORT || 5000;
+const PORT = process.env.PORT || 5200;
 
 const server = app.listen(PORT, () => {
   logger.info(`🚀  Vaultz Links API running on http://localhost:${PORT}`);
